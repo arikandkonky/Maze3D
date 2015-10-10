@@ -100,6 +100,7 @@ public class Maze3D extends MazeDisplayer {
 			int y=characterY;
 			y=y-1;
 			moveCharacter(x, y);
+			System.out.println(x + ","+y);
 		}
 		/* (non-Javadoc)
 		 * @see view.MazeDisplayer#moveDown()
@@ -110,6 +111,8 @@ public class Maze3D extends MazeDisplayer {
 			int y=characterY;
 			y=y+1;
 			moveCharacter(x, y);
+			System.out.println(x + ","+y);
+
 		}
 		/* (non-Javadoc)
 		 * @see view.MazeDisplayer#moveLeft()
@@ -120,6 +123,8 @@ public class Maze3D extends MazeDisplayer {
 			int y=characterY;
 			x=x-1;
 			moveCharacter(x, y);
+			System.out.println(x + ","+y);
+
 		}
 		/* (non-Javadoc)
 		 * @see view.MazeDisplayer#moveRight()
@@ -130,6 +135,8 @@ public class Maze3D extends MazeDisplayer {
 			int y=characterY;
 			x=x+1;
 			moveCharacter(x, y);
+			System.out.println(x + ","+y);
+
 		}
 		
 		@Override
@@ -139,42 +146,39 @@ public class Maze3D extends MazeDisplayer {
 			moveCharacter(col,row);
 		}
 
-		@Override
-		public int getCharX() {
-			// TODO Auto-generated method stub
-			return 0;
+
+		public int getCharacterX() {
+			return characterX;
 		}
-		@Override
-		public void setCharX(int CharX) {
-			// TODO Auto-generated method stub
-			
+		public void setCharacterX(int characterX) {
+			this.characterX = characterX;
 		}
-		@Override
-		public int getCharY() {
-			// TODO Auto-generated method stub
-			return 0;
+		public int getCharacterY() {
+			return characterY;
 		}
-		@Override
-		public void setCharY(int CharY) {
-			// TODO Auto-generated method stub
-			
+		public void setCharacterY(int characterY) {
+			this.characterY = characterY;
 		}
-		@Override
-		public void getCharZ() {
-			// TODO Auto-generated method stub
-			
+		public int getExitX() {
+			return exitX;
 		}
-		@Override
-		public void setCharZ(int CharZ) {
-			// TODO Auto-generated method stub
-			
+		public void setExitX(int exitX) {
+			this.exitX = exitX;
 		}
+		public int getExitY() {
+			return exitY;
+		}
+		public void setExitY(int exitY) {
+			this.exitY = exitY;
+		}
+
 		public int getCurrentFloor() {
 			return currentFloor;
 		}
 		public void setCurrentFloor(int currentFloor) {
 			this.currentFloor = currentFloor;
 		}
+
 
 	}
 

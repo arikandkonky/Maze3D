@@ -32,17 +32,14 @@ public abstract class MazeDisplayer extends Canvas {
 
 	public  abstract void moveRight();
 	
-	public abstract int getCharX();
+	public abstract void setCharacterX(int characterX);
+
+	public abstract int getCharacterX();
 	
-	public abstract void setCharX(int CharX);
-	
-	public abstract int getCharY();
-	
-	public abstract void setCharY(int CharY);
-	
-	public abstract void getCharZ();
-	
-	public abstract void setCharZ(int CharZ);
+	public abstract void setCharacterY(int characterY);
+
+	public abstract int getCharacterY();
+
 
 
 	public void setExitX(int x) {
@@ -57,6 +54,12 @@ public abstract class MazeDisplayer extends Canvas {
 
 	public void setExitZ(int z) {
 		this.setExitZ = z;
+		
+	}
+
+
+	public void setCurrentFloor(int currentFloor) {
+		// TODO Auto-generated method stub
 		
 	}
 	
