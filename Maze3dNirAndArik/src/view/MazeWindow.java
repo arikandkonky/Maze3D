@@ -48,6 +48,7 @@ public class MazeWindow extends BasicWindow {
 	Menu menuBar, fileMenu, helpMenu;
 	MenuItem fileMenuHeader, helpMenuHeader;
 	MenuItem fileExitItem, fileSaveItem, helpGetHelpItem;
+	int FloorGoalPosition;
 	
 	
 	public MazeWindow(String title, int width, int height,HashMap<String, Command> viewCommandMap) {
@@ -55,25 +56,7 @@ public class MazeWindow extends BasicWindow {
 		this.viewCommandMap=viewCommandMap;
 		// TODO Auto-generated constructor stub
 	}
-	
-	  //!---------------Function---------------------! 
-	/*private void randomWalk(MazeDisplayer maze){
-		Random r=new Random();
-		boolean b1,b2;
-		b1=r.nextBoolean();
-		b2=r.nextBoolean();
-		if(b1&&b2)
-			maze.moveUp();
-		if(b1&&!b2)
-			maze.moveDown();
-		if(!b1&&b2)
-			maze.moveRight();
-		if(!b1&&!b2)
-			maze.moveLeft();
-		
-		maze.redraw();
-	}
-	*/
+
 	public void initKeyListeners()
 	{
 		maze.addKeyListener(new KeyListener() 
@@ -89,13 +72,21 @@ public class MazeWindow extends BasicWindow {
 					System.out.println(e.toString());
 					switch (e.keyCode) 
 					{
-						case SWT.ARROW_DOWN:	maze.moveDown();
+						case SWT.ARROW_DOWN:	
+							maze.moveDown();
+							System.out.println("("+ maze.getCharacterX() + "," + maze.getCharacterY());
 							break;
-						case SWT.ARROW_UP:		maze.moveUp();
+						case SWT.ARROW_UP:
+							System.out.println("("+ maze.getCharacterX() + "," + maze.getCharacterY());
+							maze.moveUp();
 							break;
-						case SWT.ARROW_LEFT:	maze.moveLeft();
+						case SWT.ARROW_LEFT:
+							System.out.println("("+ maze.getCharacterX() + "," + maze.getCharacterY());
+							maze.moveLeft();
 							break;
-						case SWT.ARROW_RIGHT:	maze.moveRight();
+						case SWT.ARROW_RIGHT:
+							System.out.println("("+ maze.getCharacterX() + "," + maze.getCharacterY());
+							maze.moveRight();
 							break;
 						case SWT.PAGE_DOWN:
 							if(pageDownKey)
@@ -133,8 +124,10 @@ public class MazeWindow extends BasicWindow {
 					switch (e.keyCode) 
 					{
                         case SWT.PAGE_DOWN:	pageDownKey=PageUpDown("DOWN");
+                        printMatrix(crossedArr);
                         	break;
                         case SWT.PAGE_UP:	PageUp=PageUpDown("UP");
+                        printMatrix(crossedArr);
                         	break;
 					}
 				}
@@ -146,12 +139,14 @@ public class MazeWindow extends BasicWindow {
 	{
 		if (go.toUpperCase().equals("UP"))
 		{
-			if(currentFloor>=0 && currentFloor<(this.mazeData.getMaze().length-1))
+			System.out.println("CurrentFloor: "+ currentFloor + " MazeLength: " + (this.mazeData.getMaze().length) );
+
+			if(currentFloor>=0&&currentFloor<(this.mazeData.getMaze().length-1))
 			{
 				System.out.println("Prepering to go up from floor: "+ currentFloor);
 				System.out.println(this.mazeData.getMaze().length-1 + "," + currentFloor);
 				int[][] crossedArrToCheck = this.mazeData.getCrossSectionByX(currentFloor+1);
-				System.out.println("The next floor is: ");
+				System.out.println("Page Up!!!! The next floor is: ");
 				printMatrix(crossedArrToCheck);
 				System.out.println("Char position: "+ maze.getCharacterX() + "," + maze.getCharacterY());
 				if(crossedArrToCheck[maze.getCharacterX()][maze.getCharacterY()]==0)
@@ -170,22 +165,23 @@ public class MazeWindow extends BasicWindow {
 			}
 			else
 			{
-				System.out.println("not illigel");
+				System.out.println("not illigel..");
 			}
 		}
 		else if (go.toUpperCase().equals("DOWN"))
 		{
-			if(currentFloor>=1 && currentFloor<this.mazeData.getMaze().length-1)
+			System.out.println("CurrentFloor: "+ currentFloor + " MazeLength: " + (this.mazeData.getMaze().length) );
+			if(currentFloor>=1&&currentFloor<=(this.mazeData.getMaze().length-1))
 			{
 				System.out.println("Prepering to go down from floor: "+ currentFloor);
 				int[][] crossedArrToCheck = this.mazeData.getCrossSectionByX(currentFloor-1);
-				System.out.println("The next floor is: ");
+				System.out.println("Page Down!!!! The next floor is: ");
 				printMatrix(crossedArrToCheck);
-				System.out.println("Char position: "+ maze.getCharacterX() + "," + maze.getCharacterY());
+				System.out.println("Char position: ("+ maze.getCharacterX() + "," + maze.getCharacterY()+")");
 				if(crossedArrToCheck[maze.getCharacterX()][maze.getCharacterY()]==0)
 				{
 					this.crossedArr = crossedArrToCheck;
-					currentFloor++;
+					currentFloor--;
 					maze.setCurrentFloor(currentFloor);
 					maze.mazeData = crossedArr;
 					return true;
@@ -397,10 +393,10 @@ public class MazeWindow extends BasicWindow {
 	@Override
 	public void userprintMazetouser(Maze3d maze3dName, String name) {
 		out.println("Maze name: "+ name + "\n" + maze3dName.toString());
-		this.maze.setCharacterX(maze3dName.getGoalPosition().getY());
-		this.maze.setCharacterY(maze3dName.getGoalPosition().getZ());
-		//this.maze.setCharZ(maze3dName.getGoalPosition().getZ());
-		System.out.println("im here");
+		this.FloorGoalPosition=maze3dName.getGoalPosition().getX();
+		this.maze.setExitX(maze3dName.getStartPosition().getY());
+		this.maze.setExitY(maze3dName.getStartPosition().getZ());
+		System.out.println("Goal Position in Floor: "+ this.FloorGoalPosition + "in State: ("+this.maze.getExitX()+","+this.maze.getExitY()+")");
 		this.AllMaze = maze3dName;
 		this.mazeData = maze3dName;
 		this.crossedArr = this.mazeData.getCrossSectionByX(this.mazeData.getStartPosition().getX());
@@ -483,5 +479,6 @@ public class MazeWindow extends BasicWindow {
 	public void setViewCommandMap(HashMap<String, Command> viewCommandMap) {
 		this.viewCommandMap = viewCommandMap;
 	}
+	
 	
 }

@@ -34,7 +34,8 @@ public abstract class BasicWindow extends Observable implements Runnable,View{
 		 setUserCommand(11);
 		 String[] args = {"Exit"};
 		 System.out.println("Exiting now");
-		 notifyObservers();
+		 
+		 notifyObservers(args);
 		 display.dispose(); // dispose OS components
 	}
 	

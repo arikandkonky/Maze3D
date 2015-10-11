@@ -50,6 +50,14 @@ public abstract class MazeDisplayer extends Canvas {
 	public void setExitY(int y) {
 		this.ExitY = y;		
 	}
+	
+	public int getExitX() {
+		return ExitX;}
+
+
+	public int getExitY() {
+		return ExitY;}
+
 
 
 	public void setExitZ(int z) {

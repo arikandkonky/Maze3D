@@ -50,22 +50,27 @@ public class Run {
 		XMLDecoder decoder=null;
 		decoder=new XMLDecoder(new BufferedInputStream(new FileInputStream("properties.xml")));
 		Properties properties=(Properties)decoder.readObject();
-		/*
+		
 		System.out.println(properties);
-		try {
-			System.out.println(properties);	
-			MyView view = new MyView(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
-			MyModel model = new MyModel(properties);
-			Presenter presenter = new Presenter(view, model);
-			view.setStringtoCommand(presenter.stringtoCommand);
-			view.addObserver(presenter);
-			model.addObserver(presenter);
-			view.start();
-		} catch (FileNotFoundException e) {
-			System.out.println("ERROR: properties.xml not found");
-		}*/
-		//if(properties.getUI().equals("GUI"))
-		//{
+		if(properties.getUI().equals("CLI"))
+		{
+			try {
+				System.out.println(properties);	
+				MyView view = new MyView(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
+				MyModel model = new MyModel(properties);
+				Presenter presenter = new Presenter(view, model);
+				view.setStringtoCommand(presenter.stringtoCommand);
+				view.addObserver(presenter);
+				model.addObserver(presenter);
+				view.start();
+				}
+			catch (FileNotFoundException e) 
+				{
+					System.out.println("ERROR: properties.xml not found");
+				}
+		}
+		if(properties.getUI().equals("GUI"))
+		{
 			MyModel model = new MyModel(properties);
 			MazeWindow view=new MazeWindow("3D Maze Game", 500, 300,null);
 			Presenter presenter = new Presenter(view, model);
@@ -74,9 +79,10 @@ public class Run {
 			view.addObserver(presenter);
 			model.addObserver(presenter);
 			view.run();
-		//}
+	
+		}
 	}
-	}
-
+	
+}
 
 

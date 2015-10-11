@@ -68,10 +68,21 @@ public class Maze3D extends MazeDisplayer {
 								   e.gc.fillOval((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
 								   e.gc.setBackground(new Color(null,255,0,0));
 								   e.gc.fillOval((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
-								   e.gc.setBackground(new Color(null,0,0,0));				        	  
+								   e.gc.setBackground(new Color(null,0,0,0));	
 					          }
+						      if(characterX == exitX && characterY == exitY)
+							  {
+								  e.gc.setBackground(new Color(null,255,255,0));
+								  e.gc.fillOval((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
+								  e.gc.setBackground(new Color(null,255,255,0));
+								  e.gc.fillOval((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
+								  e.gc.setBackground(new Color(null,255,255,0)); 
+							  }
 					      }
+
 					   }
+					   
+					   
 					
 				}
 			});

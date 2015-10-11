@@ -2,7 +2,7 @@
 <java version="1.7.0_80" class="java.beans.XMLDecoder">
  <object class="presenter.Properties">
   <void property="UI">
-   <string>CLI</string>
+   <string>GUI</string>
   </void>
   <void property="defAlgorithm">
    <string>My3dGenerator</string>
