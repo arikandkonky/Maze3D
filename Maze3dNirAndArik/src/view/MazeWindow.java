@@ -20,8 +20,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
+import org.omg.Messaging.SyncScopeHelper;
 
 import algorithms.mazeGenerators.Maze3d;
+import algorithms.mazeGenerators.Maze3dPosition;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
@@ -32,7 +34,7 @@ public class MazeWindow extends BasicWindow {
 
 	Timer timer;
 	TimerTask task;
-	HashMap<String, Command> viewCommandMap;
+	public HashMap<String, Command> viewCommandMap;
 	BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
 	PrintWriter out=new PrintWriter(System.out);
 	int userCommand=0;
@@ -49,6 +51,8 @@ public class MazeWindow extends BasicWindow {
 	MenuItem fileMenuHeader, helpMenuHeader;
 	MenuItem fileExitItem, fileSaveItem, helpGetHelpItem;
 	int FloorGoalPosition;
+	String MatrixName;
+	Solution<Position> SolutionHelp;
 	
 	
 	public MazeWindow(String title, int width, int height,HashMap<String, Command> viewCommandMap) {
@@ -91,14 +95,14 @@ public class MazeWindow extends BasicWindow {
 						case SWT.PAGE_DOWN:
 							if(pageDownKey)
 							{
-								maze.moveDown();
+								maze.moveFloorDown();
 								pageDownKey=false;
 							}
 							break;
 						case SWT.PAGE_UP:
 							if(PageUp)
 							{
-								maze.moveUp();
+								maze.moveFloorUp();
 								PageUp=false;
 							}
 							break;
@@ -236,6 +240,30 @@ public class MazeWindow extends BasicWindow {
 	    helpGetHelpItem = new MenuItem(helpMenu, SWT.PUSH);
 	    helpGetHelpItem.setText("&Get Help");
 	    
+	    MenuItem helpsolvemazeItem = new MenuItem(helpMenu,SWT.PUSH);
+	    helpsolvemazeItem.setText("&get solve");
+		//!---------------get solve Listener---------------------! 
+	    helpsolvemazeItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				int newStartPositionY = maze.getCharacterX();
+				int newStartPositionZ = maze.getCharacterY();
+				int FloorX = currentFloor;
+				Maze3d maze = AllMaze;
+				HashMap<String, Command> viewCommandMap = getViewCommandMap();
+				helpSolveUserMazefromPoint(MatrixName,FloorX,newStartPositionY,newStartPositionZ);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	    
+	    
+	    
 	    //!--------------- Initial StartBottom---------------------! 
 	  	final Button startButton=new Button(shell, SWT.PUSH);
 	  	startButton.setText("Start");
@@ -343,8 +371,9 @@ public class MazeWindow extends BasicWindow {
 	private void initMaze() 
 	{
 		maze=new Maze3D(shell, SWT.BORDER);
-		String[] mazeArgs =  {"nir","My3dGenerator","2","8","8"};
+		String[] mazeArgs =  {"Konky","My3dGenerator","2","9","9"};
 		this.viewCommandMap.get("generate 3d maze").doCommand(mazeArgs);
+		this.MatrixName = mazeArgs[0];
         maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,2));
 	}
 
@@ -384,6 +413,7 @@ public class MazeWindow extends BasicWindow {
 	@Override
 	public void userMazeReady(String name) {
 		String[] a = new String[1];
+		this.MatrixName = name;
 		out.println("Maze: "+ name+ "Ready!");
 		a[0] = name;
 		System.out.println("usermazeisready");
@@ -394,8 +424,9 @@ public class MazeWindow extends BasicWindow {
 	public void userprintMazetouser(Maze3d maze3dName, String name) {
 		out.println("Maze name: "+ name + "\n" + maze3dName.toString());
 		this.FloorGoalPosition=maze3dName.getGoalPosition().getX();
-		this.maze.setExitX(maze3dName.getStartPosition().getY());
-		this.maze.setExitY(maze3dName.getStartPosition().getZ());
+		this.maze.setExitX(maze3dName.getGoalPosition().getY());
+		this.maze.setExitY(maze3dName.getGoalPosition().getZ());
+		this.maze.setfloorExit(this.FloorGoalPosition);
 		System.out.println("Goal Position in Floor: "+ this.FloorGoalPosition + "in State: ("+this.maze.getExitX()+","+this.maze.getExitY()+")");
 		this.AllMaze = maze3dName;
 		this.mazeData = maze3dName;
@@ -407,6 +438,21 @@ public class MazeWindow extends BasicWindow {
 		out.flush();
 		
 		}
+	public void helpSolveUserMazefromPoint(String MatrixName,int X, int Y,int Z)
+	{
+		int stringX = X;
+		String strX = "" + stringX;
+		int stringY = Y;
+		String strY = "" + stringY;
+		int stringZ = Z;
+		String strZ = "" + stringZ;
+		String[] mazeToSolve =  {MatrixName,strX,strY,strZ};
+		this.viewCommandMap.get("Solve Maze Point").doCommand(mazeToSolve);
+		String[] displaySolutionString = {MatrixName +""+X+""+Y+""+Z};
+		this.viewCommandMap.get("display solution").doCommand(displaySolutionString);
+		//System.out.println("i get here");
+		
+	}
 
 	@Override
 	public void userprintCrossBySection(int[][] section, String xyz, String index, String name) {
@@ -430,16 +476,77 @@ public class MazeWindow extends BasicWindow {
 	public void userSolutionReady(String name) {out.println("The solution of maze name: "+ name + " is Ready!");}
 
 	@Override
-	public void userprintSolution(String name, Solution<Position> solution) {
-		out.println("View: \n Solution of maze :" + name + "\n");
-		out.flush();
-		for(State<Position> p :solution.getSolution())
+	
+	public void userprintSolution(final String name, final Solution<Position> solution)
+	{
+		System.out.println("before the thread");
+		Thread t = new Thread(new Runnable()
 		{
-			out.println(p.getCamefrom() + " " + p.getActionName() + " to: " + p.toString());
-			out.flush();
-		}
+			
+			@Override
+			public void run()
+			{
+				System.out.println("in the Run!");
+				// TODO Auto-generated method stub
+				out.println("View: \n Solution of maze :" + name + "\n");
+				out.flush();
+				SolutionHelp = solution;
+				out.println(solution.toString());
+				out.println("Goal Position: "+ "In Floor: "+ AllMaze.getGoalPosition().getX() + " In Position: ("+AllMaze.getGoalPosition().getY()+","+AllMaze.getGoalPosition().getZ()+")");
+				for(State<Position> p :solution.getSolution())
+				{
+					System.out.println(p.getActionName().toString());
+					switch (p.getActionName()) 
+					{
+					case "FloorUp":
+							PageUpDown("Up");
+							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
+							maze.moveFloorUp();
+						break;
+					case "FloorDown":
+							PageUpDown("Down");
+							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
+							maze.moveFloorDown();
+						break;
+					case "LineForward":
+						maze.moveDown();
+						System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
+						
+						break;
+					case "LineBackward":
+						maze.moveUp();
+						System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
+						
+						break;
+					case "ColRight":
+						maze.moveLeft();
+						System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
+						
+						break;
+					case "ColLeft":
+						maze.moveRight();
+						System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
+						
+						break;
+					default:
+						break;
+					}
+					try 
+					{
+					    Thread.sleep(1000);                 //1000 milliseconds is one second.
+					} catch(InterruptedException ex)
+					{
+					    Thread.currentThread().interrupt();
+					}
+					//out.println(p.getCamefrom() + " " + p.getActionName() + " to: " + p.toString());
+					//out.flush();
+				}
+				
+			}
+		});t.start();
+	}	
+	
 		
-	}
 	
 	
 	//**********************************Getters And Setters********************************************//

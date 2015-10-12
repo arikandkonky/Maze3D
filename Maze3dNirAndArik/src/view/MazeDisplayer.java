@@ -23,6 +23,9 @@ public abstract class MazeDisplayer extends Canvas {
 	
 	public abstract  void setCharacterPosition(int row,int col);
 
+	public abstract void moveFloorUp();
+	
+	public abstract void moveFloorDown();
 	
 	public abstract void moveUp();
 
@@ -46,6 +49,7 @@ public abstract class MazeDisplayer extends Canvas {
 		this.ExitX= x;
 	}
 
+	public abstract void setfloorExit(int exit);
 
 	public void setExitY(int y) {
 		this.ExitY = y;		

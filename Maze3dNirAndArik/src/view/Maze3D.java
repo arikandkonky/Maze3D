@@ -3,6 +3,7 @@ package view;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class Maze3D extends MazeDisplayer {
@@ -11,6 +12,7 @@ public class Maze3D extends MazeDisplayer {
 		public int characterY=2;
 		public int exitX=0;
 		public int exitY=2;
+		public int floorExit;
 		private int currentFloor;
 		
 		private void paintCube(double[] p,double h,PaintEvent e){
@@ -62,22 +64,36 @@ public class Maze3D extends MazeDisplayer {
 					          double cheight=h/2;
 					          if(mazeData[i][j]!=0)
 					        	  paintCube(dpoints, cheight,e);
+					          if(i==characterY && j==characterX && exitX==characterX &&exitY ==characterY&& floorExit == currentFloor)
+					          {
+					        	  /* Draw Exit & Character at the same place. */ 
+					        	  e.gc.setBackground(new Color(null,200,100,0));
+					        	  e.gc.fillOval((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
+					        	  e.gc.setBackground(new Color(null,0,255,255));
+					        	  e.gc.fillOval((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
+					        	  e.gc.setBackground(new Color(null,0,0,0));
+					          }
 					          
-					          if(i==characterY && j==characterX){
+					          else
+					          {
+					        	  if (i==characterY && j==characterX)
+					        	  {
 								   e.gc.setBackground(new Color(null,200,0,0));
 								   e.gc.fillOval((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
 								   e.gc.setBackground(new Color(null,255,0,0));
 								   e.gc.fillOval((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
-								   e.gc.setBackground(new Color(null,0,0,0));	
+								   e.gc.setBackground(new Color(null,0,0,0));
+					        	  }
+					        	  /* Draw Exit */ 
+						          if(i==exitX && j==exitY && floorExit == currentFloor){
+						        	  e.gc.setBackground(new Color(null,0,255,255));
+						        	  e.gc.setForeground(black);
+						        	  e.gc.fillRectangle((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
+						        	  e.gc.setBackground(new Color(null,0,100,200));
+						        	  e.gc.fillRectangle((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
+						        	  e.gc.setBackground(new Color(null,0,0,0));
+						          }
 					          }
-						      if(characterX == exitX && characterY == exitY)
-							  {
-								  e.gc.setBackground(new Color(null,255,255,0));
-								  e.gc.fillOval((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
-								  e.gc.setBackground(new Color(null,255,255,0));
-								  e.gc.fillOval((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
-								  e.gc.setBackground(new Color(null,255,255,0)); 
-							  }
 					      }
 
 					   }
@@ -87,7 +103,7 @@ public class Maze3D extends MazeDisplayer {
 				}
 			});
 		}
-		
+
 		private void moveCharacter(int x,int y){
 			if(x>=0 && x<mazeData[0].length && y>=0 && y<mazeData.length && mazeData[y][x]==0){
 				characterX=x;
@@ -105,24 +121,32 @@ public class Maze3D extends MazeDisplayer {
 		/* (non-Javadoc)
 		 * @see view.MazeDisplayer#moveUp()
 		 */
+		/* (non-Javadoc)
+		 * @see view.MazeDisplayer#moveDown()
+		 */
+		public void moveFloorDown(){
+			moveCharacter(characterX, characterY);
+			
+		}
+		public void moveFloorUp(){
+			moveCharacter(characterX, characterY);
+			
+		}
 		@Override
 		public void moveUp() {
 			int x=characterX;
 			int y=characterY;
 			y=y-1;
 			moveCharacter(x, y);
-			System.out.println(x + ","+y);
 		}
-		/* (non-Javadoc)
-		 * @see view.MazeDisplayer#moveDown()
-		 */
+
+		
 		@Override
 		public void moveDown() {
 			int x=characterX;
 			int y=characterY;
 			y=y+1;
 			moveCharacter(x, y);
-			System.out.println(x + ","+y);
 
 		}
 		/* (non-Javadoc)
@@ -134,7 +158,6 @@ public class Maze3D extends MazeDisplayer {
 			int y=characterY;
 			x=x-1;
 			moveCharacter(x, y);
-			System.out.println(x + ","+y);
 
 		}
 		/* (non-Javadoc)
@@ -146,7 +169,6 @@ public class Maze3D extends MazeDisplayer {
 			int y=characterY;
 			x=x+1;
 			moveCharacter(x, y);
-			System.out.println(x + ","+y);
 
 		}
 		
@@ -188,6 +210,11 @@ public class Maze3D extends MazeDisplayer {
 		}
 		public void setCurrentFloor(int currentFloor) {
 			this.currentFloor = currentFloor;
+		}
+		@Override
+		public void setfloorExit(int exit) {
+			this.floorExit = exit;
+			
 		}
 
 

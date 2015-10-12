@@ -45,6 +45,9 @@ public interface Model {
 
 
 	void changeXmlFile(String filename) throws FileNotFoundException;
+
+
+	void solveMazeUser(String string, String string2, String string3, String string4);
 	
 	
 

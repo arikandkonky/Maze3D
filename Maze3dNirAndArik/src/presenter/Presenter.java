@@ -24,6 +24,19 @@ public class Presenter implements Observer {
 		this.model = model;
 		
 		stringtoCommand = new HashMap<String,Command>();
+		
+		stringtoCommand.put("Solve Maze Point", new Command() {
+			
+			@Override
+			public void doCommand(String[] args) {
+				try{
+					view.setUserCommand(13);
+					((Observable)view).notifyObservers(args);
+				}catch (NullPointerException e){e.printStackTrace();}
+				
+			}
+		});
+		
 		stringtoCommand.put("dir", new Command() 
 		{
 			
@@ -320,6 +333,14 @@ public class Presenter implements Observer {
 				}catch(Exception e){
 					e.printStackTrace();
 					view.errorNoticeToUser("Error: Not XML file");
+				}
+			case 13:
+				try{model.solveMazeUser(args[0],args[1],args[2],args[3]);
+				
+				}catch(Exception e){
+					e.printStackTrace();
+					view.errorNoticeToUser("Error: ...need to fix it!");
+					
 				}
 				
 			default:

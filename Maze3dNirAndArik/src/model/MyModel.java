@@ -25,6 +25,7 @@ import java.util.zip.GZIPOutputStream;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Maze3dGenerator;
+import algorithms.mazeGenerators.Maze3dPosition;
 import algorithms.mazeGenerators.My3dGenerator;
 import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.SimpleMaze3dGenerator;
@@ -35,6 +36,7 @@ import algorithms.search.Maze3DSolution;
 import algorithms.search.Maze3dSearch;
 import algorithms.search.Searchable;
 import algorithms.search.Solution;
+import algorithms.search.State;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 import presenter.Properties;
@@ -530,6 +532,72 @@ public class MyModel extends Observable implements Model{
         decoder.close();
         return properties;
     }
+
+	@Override
+	public void solveMazeUser(final String name, final String x, final String y, final String z) {
+		int X = new Integer(x);
+		int Y = new Integer(y);
+		int Z = new Integer(z);
+		Maze3d maze = stringtoMaze3d.get(name);
+		Maze3dPosition mazeStartPosition = new Maze3dPosition(X, Y, Z);
+		maze.setStartPosition(mazeStartPosition);
+		stringtoMaze3d.put((name+""+x+""+y+""+z), maze);
+		if(solutionMap.containsKey(stringtoMaze3d.get(name+""+x+""+y+""+z))){
+		Solution<Position> Solutionmap = solutionMap.get(stringtoMaze3d.get(name+""+x+""+y+""+z));
+		
+		for(State<Position> aa : Solutionmap.getSolution())
+		{
+			System.out.println(aa.getActionName().toString());
+		}
+		}
+		if(stringtoMaze3d.containsKey(name+""+x+""+y+""+z))
+		{
+			if(solutionMap.containsKey(stringtoMaze3d.get(name+""+x+""+y+""+z)))
+			{
+				System.out.println("alrdy solved this maze, wont do it again..");
+				this.modelCompletedCommand=9;
+				this.setData(name);
+				
+				System.out.println(solutionMap.get(stringtoMaze3d.get(name+""+x+""+y+""+z)).toString());
+				setChanged();
+				notifyObservers();
+			}
+			else
+			{
+				Callable<Solution<Position>> mazeSolver =new Callable<Solution<Position>>() {
+					@SuppressWarnings({ "unchecked", "rawtypes" })
+					@Override
+					public Solution<Position> call() throws Exception 
+					{
+						Maze3d maze = stringtoMaze3d.get((name+""+x+""+y+""+z));
+						Searchable<Position> s = new Maze3dSearch(maze);
+						Maze3DSolution solution = new Maze3DSolution();
+						if(p.getDefSolver().equals("bfs"))
+						{
+							System.out.println("Solve with defualt bfs");
+							BfsCommonSearcher Bfs = new BfsCommonSearcher(solution);
+							Bfs.setSolution(solution);
+							
+							solutionMap.put(stringtoMaze3d.get(name), (Maze3DSolution)Bfs.Search(s));
+							solveMazeByBfs(name);
+						}
+						else if(p.getDefSolver().equals("astar"))
+						{
+							System.out.println("solve with default astar, Manhetthen distance");
+							Manhattandistance h2 = new Manhattandistance();
+							AstarCommonSearcher Astar = new AstarCommonSearcher<>(h2, solution, s);
+							Astar.setSolution(solution);
+							System.err.println(solution.toString());
+							solutionMap.put(stringtoMaze3d.get(name), (Maze3DSolution)Astar.Search(s));
+							solveMazeByAstar(name);
+						}
+							return null;
+					}
+				};c.submit(mazeSolver);
+			}
+		}
+		
+	}
 
 
 
