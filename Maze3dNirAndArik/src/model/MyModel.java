@@ -557,8 +557,8 @@ public class MyModel extends Observable implements Model{
 				System.out.println("alrdy solved this maze, wont do it again..");
 				this.modelCompletedCommand=9;
 				this.setData(name);
-				
-				System.out.println(solutionMap.get(stringtoMaze3d.get(name+""+x+""+y+""+z)).toString());
+				System.out.println(stringtoMaze3d.get(name+""+x+""+y+""+z).getGoalPosition().toString());
+				System.out.println("GOAL POSITION#$%#$%$#%$#%: "+ solutionMap.get(stringtoMaze3d.get(name+""+x+""+y+""+z)).toString());
 				setChanged();
 				notifyObservers();
 			}
@@ -571,6 +571,7 @@ public class MyModel extends Observable implements Model{
 					{
 						Maze3d maze = stringtoMaze3d.get((name+""+x+""+y+""+z));
 						Searchable<Position> s = new Maze3dSearch(maze);
+						System.out.println("GOAL POSITION#$%#$%$#%$#%: "+ stringtoMaze3d.get(name+""+x+""+y+""+z).getGoalPosition().toString());
 						Maze3DSolution solution = new Maze3DSolution();
 						if(p.getDefSolver().equals("bfs"))
 						{

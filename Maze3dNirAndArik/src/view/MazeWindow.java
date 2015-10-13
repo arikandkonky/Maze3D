@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Text;
 import org.omg.Messaging.SyncScopeHelper;
 
 import algorithms.mazeGenerators.Maze3d;
@@ -212,6 +213,98 @@ public class MazeWindow extends BasicWindow {
 	    initKeyListeners();
 		shell.setLayout(new GridLayout(2,false));		
 		
+
+	    //**************Initail Floors/Line/Col***********************/
+		Label lbFloor = new Label(shell, SWT.NONE);
+	    lbFloor.setText("Floors:");
+
+	    GridData dataFloor = new GridData();
+	    dataFloor.grabExcessHorizontalSpace = true;
+	    dataFloor.horizontalAlignment = GridData.FILL;
+
+	     final Text txtFloor = new Text(shell, SWT.BORDER);
+	    txtFloor.setLayoutData(dataFloor);
+	    
+	    Label lbLine = new Label(shell, SWT.NONE);
+	    lbLine.setText("Lines:");
+
+	    GridData dataLine = new GridData();
+	    dataLine.grabExcessHorizontalSpace = true;
+	    dataLine.horizontalAlignment = GridData.FILL;
+
+	     final Text txtLine = new Text(shell, SWT.BORDER);
+	     txtLine.setLayoutData(dataFloor);
+	     
+	     Label lbCol = new Label(shell, SWT.NONE);
+		 lbCol.setText("Col:");
+
+		 GridData dataCol = new GridData();
+		 dataCol.grabExcessHorizontalSpace = true;
+		 dataCol.horizontalAlignment = GridData.FILL;
+
+		 final Text txtCol = new Text(shell, SWT.BORDER);
+		 txtCol.setLayoutData(dataFloor);
+	    
+		 //************Initial Enter Button*******************/
+		 final Button EnterButton=new Button(shell, SWT.PUSH);
+		 EnterButton.setText("Enter");
+		 EnterButton.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
+		 
+		//!--------------- Initial the Enter Listener---------------------! 
+		 EnterButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				System.out.println("Generating maze: \n");
+				System.out.println("Floors: "+ txtFloor.getText().toString());
+				System.out.println("Lines: "+ txtLine.getText().toString());
+				System.out.println("Cols: "+ txtCol.getText().toString());
+				if(!txtFloor.getText().toString().isEmpty() && (!txtLine.getText().toString().isEmpty()) && (!txtCol.getText().toString().isEmpty()))
+				{
+					MessageBox ErrorBox = new MessageBox(shell);
+					Integer intFloor = new Integer(txtFloor.getText().toString());
+					Integer intLine = new Integer(txtLine.getText().toString());
+					Integer intCol = new Integer(txtCol.getText().toString());
+					if(txtFloor.getText().toString().isEmpty() || intFloor<0 || txtLine.getText().toString().isEmpty() || intLine<0 || txtCol.getText().toString().isEmpty() || intCol<0)
+					if(txtFloor.getText().toString().isEmpty() || intFloor<0)
+					{
+						ErrorBox.setMessage("Error: Floor = "+ txtFloor.getText().toString() + " Not Illigel only >0!");
+						ErrorBox.setText("Error!");
+					}
+					if(txtLine.getText().toString().isEmpty() || intLine<0)
+					{
+						ErrorBox.setMessage("Error: Line = "+ txtLine.getText().toString() + " Not Illigel only >0!");
+						ErrorBox.setText("Error!");
+					}
+					if(txtCol.getText().toString().isEmpty() || intCol<0)
+					{
+						ErrorBox.setMessage("Error: Col = "+ txtCol.getText().toString() + " Not Illigel only >0!");
+						ErrorBox.setText("Error!");
+					}
+					ErrorBox.open();
+				}
+				else if(txtFloor.getText().toString().isEmpty() || (txtLine.getText().toString().isEmpty()) || (txtCol.getText().toString().isEmpty()))
+				{
+					MessageBox ErrorBox = new MessageBox(shell);
+					ErrorBox.setText("Error!");
+					if(txtFloor.getText().toString().isEmpty())
+						ErrorBox.setMessage("Error: Floor is empty!");
+					if(txtLine.getText().toString().isEmpty())
+						ErrorBox.setMessage("Error: Line is empty!");
+					if(txtCol.getText().toString().isEmpty())
+						ErrorBox.setMessage("Error: Col is empty!");
+					ErrorBox.open();	
+				}
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		//!--------------- Initial the Menu Bar---------------------! 
 		menuBar = new Menu(shell, SWT.BAR);//menu bar
 		fileMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
@@ -261,8 +354,6 @@ public class MazeWindow extends BasicWindow {
 				
 			}
 		});
-	    
-	    
 	    
 	    //!--------------- Initial StartBottom---------------------! 
 	  	final Button startButton=new Button(shell, SWT.PUSH);
@@ -519,12 +610,12 @@ public class MazeWindow extends BasicWindow {
 						
 						break;
 					case "ColRight":
-						maze.moveLeft();
+						maze.moveRight();
 						System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
 						
 						break;
 					case "ColLeft":
-						maze.moveRight();
+						maze.moveLeft();
 						System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
 						
 						break;

@@ -64,7 +64,7 @@ public class Maze3D extends MazeDisplayer {
 					          double cheight=h/2;
 					          if(mazeData[i][j]!=0)
 					        	  paintCube(dpoints, cheight,e);
-					          if(i==characterY && j==characterX && exitX==characterX &&exitY ==characterY&& floorExit == currentFloor)
+					          if(j==characterY && i==characterX && exitX==characterX &&exitY ==characterY&& floorExit == currentFloor)
 					          {
 					        	  /* Draw Exit & Character at the same place. */ 
 					        	  e.gc.setBackground(new Color(null,200,100,0));
@@ -76,7 +76,7 @@ public class Maze3D extends MazeDisplayer {
 					          
 					          else
 					          {
-					        	  if (i==characterY && j==characterX)
+					        	  if (j==characterY && i==characterX)
 					        	  {
 								   e.gc.setBackground(new Color(null,200,0,0));
 								   e.gc.fillOval((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
@@ -105,7 +105,7 @@ public class Maze3D extends MazeDisplayer {
 		}
 
 		private void moveCharacter(int x,int y){
-			if(x>=0 && x<mazeData[0].length && y>=0 && y<mazeData.length && mazeData[y][x]==0){
+			if(y>=0 && y<mazeData[0].length && x>=0 && x<mazeData.length && mazeData[x][y]==0){
 				characterX=x;
 				characterY=y;
 				getDisplay().syncExec(new Runnable() {
@@ -136,8 +136,8 @@ public class Maze3D extends MazeDisplayer {
 		public void moveUp() {
 			int x=characterX;
 			int y=characterY;
-			y=y-1;
-			moveCharacter(x, y);
+			x=x-1;
+			moveCharacter(x,y);
 		}
 
 		
@@ -145,8 +145,9 @@ public class Maze3D extends MazeDisplayer {
 		public void moveDown() {
 			int x=characterX;
 			int y=characterY;
-			y=y+1;
+			x=x+1;
 			moveCharacter(x, y);
+
 
 		}
 		/* (non-Javadoc)
@@ -156,7 +157,7 @@ public class Maze3D extends MazeDisplayer {
 		public void moveLeft() {
 			int x=characterX;
 			int y=characterY;
-			x=x-1;
+			y=y-1;
 			moveCharacter(x, y);
 
 		}
@@ -167,16 +168,16 @@ public class Maze3D extends MazeDisplayer {
 		public void moveRight() {
 			int x=characterX;
 			int y=characterY;
-			x=x+1;
+			y=y+1;
 			moveCharacter(x, y);
 
 		}
 		
 		@Override
 		public void setCharacterPosition(int row, int col) {
-			characterX=col;
-			characterY=row;
-			moveCharacter(col,row);
+			characterX=row;
+			characterY=col;
+			moveCharacter(row,col);
 		}
 
 
