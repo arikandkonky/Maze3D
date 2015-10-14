@@ -4,6 +4,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.widgets.Composite;
 
 public class Maze3D extends MazeDisplayer {
@@ -38,14 +39,16 @@ public class Maze3D extends MazeDisplayer {
 			
 			final Color white=new Color(null, 255, 255, 255);
 			final Color black=new Color(null, 150,150,150);
-			setBackground(white);
+			Image bGImage = new Image(getDisplay(), "C:/Maze.png");
+			setBackgroundImage(bGImage);
 			addPaintListener(new PaintListener() {
 				
 				@Override
 				public void paintControl(PaintEvent e) {
+					   //e.gc.drawString(null, 10, 10);
 					   e.gc.setForeground(new Color(null,0,0,0));
 					   e.gc.setBackground(new Color(null,0,0,0));
-
+				
 					   int width=getSize().x;
 					   int height=getSize().y;
 					   
@@ -92,6 +95,8 @@ public class Maze3D extends MazeDisplayer {
 						        	  e.gc.setBackground(new Color(null,0,100,200));
 						        	  e.gc.fillRectangle((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
 						        	  e.gc.setBackground(new Color(null,0,0,0));
+						        	  won = true;
+						        	  
 						          }
 					          }
 					      }
@@ -179,16 +184,14 @@ public class Maze3D extends MazeDisplayer {
 			characterY=col;
 			moveCharacter(row,col);
 		}
-
-
 		public int getCharacterX() {
-			return characterX;
+			return this.characterX;
 		}
 		public void setCharacterX(int characterX) {
 			this.characterX = characterX;
 		}
 		public int getCharacterY() {
-			return characterY;
+			return this.characterY;
 		}
 		public void setCharacterY(int characterY) {
 			this.characterY = characterY;
@@ -217,7 +220,10 @@ public class Maze3D extends MazeDisplayer {
 			this.floorExit = exit;
 			
 		}
-
+		public int getfloorExit()
+		{
+			return floorExit;
+		}
 
 	}
 

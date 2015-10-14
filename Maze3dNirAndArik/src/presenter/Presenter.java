@@ -37,6 +37,20 @@ public class Presenter implements Observer {
 			}
 		});
 		
+		
+		stringtoCommand.put("display solution one", new Command() 
+		{
+			
+			@Override
+			public void doCommand(String[] args) 
+			{
+				try {
+					view.setUserCommand(14);
+					((Observable)view).notifyObservers(args);
+				} catch (NullPointerException e) {e.printStackTrace();}
+			}
+		});
+		
 		stringtoCommand.put("dir", new Command() 
 		{
 			
@@ -342,6 +356,14 @@ public class Presenter implements Observer {
 					view.errorNoticeToUser("Error: ...need to fix it!");
 					
 				}
+			case 14:
+				try{model.solveMazeUserOnepoint(args[0]);
+				
+				}catch(Exception e){
+					e.printStackTrace();
+					view.errorNoticeToUser("Error: ...need to fix it!");
+					
+				}
 				
 			default:
 				break;
@@ -359,7 +381,12 @@ public class Presenter implements Observer {
 				break;
 
 			case 2:
-				view.userMazeReady((String) model.getData());
+				try {
+					view.userMazeReady((String) model.getData());
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				break;
 				
 			case 3:
@@ -406,8 +433,12 @@ public class Presenter implements Observer {
 				dataSet = (Object[])model.getData();
 				view.printXMLfieds((String)dataSet[0],(String)dataSet[1],(int)dataSet[2],(String)dataSet[3]);
 				break;
+			case 12:
+				dataSet = (Object[])model.getData();
+				view.oneStateDisplay((String)dataSet[0], (Solution<Position>)dataSet[1]);
 			case -1:
-				view.errorNoticeToUser((String)model.getData());
+				//System.out.println(model.getData().toString());
+				//view.errorNoticeToUser((String)model.getData());
 				break;
 				
 				

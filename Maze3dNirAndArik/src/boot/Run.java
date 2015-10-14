@@ -39,6 +39,7 @@ import Tests.AstarTest;
 import model.MyModel;
 import presenter.Presenter;
 import presenter.Properties;
+import view.BasicWindow;
 import view.Maze3D;
 import view.MazeDisplayer;
 import view.MazeWindow;
@@ -78,6 +79,8 @@ public class Run {
 			view.setViewCommandMap((presenter.getStringtoCommand()));
 			view.addObserver(presenter);
 			model.addObserver(presenter);
+			//MazeDisplayer md = new ;
+			//md.setBs(view);
 			view.run();
 	
 		}

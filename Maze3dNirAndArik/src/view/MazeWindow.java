@@ -349,7 +349,7 @@ public class MazeWindow extends BasicWindow {
 				ErrorBox.setText("Help!!! :)");
 				ErrorBox.setMessage("A Little Help...");
 				ErrorBox.open();
-				shell.layout();
+				//shell.layout();
 			}
 			
 			@Override
@@ -408,6 +408,9 @@ public class MazeWindow extends BasicWindow {
 		  //!---------------Image background---------------------! 
 	    //Image image = new Image(display,"C:\file.png");
 	    //label.setImage(image);
+	    sashForm.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLUE));
+	    sashForm2.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLUE));
+
 		tab1.setControl(sashForm2);
 	    shell.setMenuBar(menuBar);
 	    tab2.setControl(sashForm);
@@ -431,7 +434,7 @@ public class MazeWindow extends BasicWindow {
 			maze=new Maze3D(shell, SWT.BORDER);
 			initKeyListeners();
 		}
-		initKeyListeners();
+		//initKeyListeners();
 		String[] mazeArgs =  {Name,"My3dGenerator",Floor,Line,Col};
 		this.viewCommandMap.get("generate 3d maze").doCommand(mazeArgs);
 		this.MatrixName = mazeArgs[0];
@@ -493,7 +496,7 @@ public class MazeWindow extends BasicWindow {
 						maze=new Maze3D(shell, SWT.BORDER);
 						initKeyListeners();
 					}
-					initKeyListeners();
+					//initKeyListeners();
 					maze.setIsWon(false);
 			        maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,2));
 			    	out.println("Maze name: "+ name + "\n" + maze3dName.toString());
@@ -805,6 +808,7 @@ public class MazeWindow extends BasicWindow {
 		ErrorBox.setText("Won!!! :)");
 		ErrorBox.setMessage("Nice you solve the Maze With little Help :P");
 		ErrorBox.open();
+		maze.redraw();
 		shell.layout();
 	}	
 	

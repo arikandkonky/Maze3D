@@ -1,6 +1,9 @@
 package view;
 
 import java.util.Observable;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -13,6 +16,7 @@ public abstract class BasicWindow extends Observable implements Runnable,View{
  		shell  = new Shell(display);
  		shell.setSize(width,height);
  		shell.setText(title);
+ 		MazeDisplayer maze;
 	}
  	
  	abstract void initWidgets();
@@ -20,6 +24,10 @@ public abstract class BasicWindow extends Observable implements Runnable,View{
 	@Override
 	public void run() {
 		initWidgets();
+		Image image = new Image(display, "C:/Maze.png");
+
+        shell.setBackgroundImage(image);
+        shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		shell.open();
 		// main event loop
 		 while(!shell.isDisposed()){ // while window isn't closed
@@ -39,5 +47,6 @@ public abstract class BasicWindow extends Observable implements Runnable,View{
 		 display.dispose(); // dispose OS components
 	}
 	
+	public abstract void isWon(boolean a);
 
 }

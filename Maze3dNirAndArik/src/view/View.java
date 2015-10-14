@@ -45,7 +45,10 @@ public interface View {
 	int getUserCommand();
 
 
-	void printXMLfieds(String string, String string2, int i, String string3); 
+	void printXMLfieds(String string, String string2, int i, String string3);
+
+
+	void oneStateDisplay(String string, Solution<Position> solution); 
 
 
 

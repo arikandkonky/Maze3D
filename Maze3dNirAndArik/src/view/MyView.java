@@ -188,6 +188,12 @@ public class MyView extends Observable implements View {
 				"Default UI: "+ string3);
 		
 	}
+
+	@Override
+	public void oneStateDisplay(String string, Solution<Position> solution) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

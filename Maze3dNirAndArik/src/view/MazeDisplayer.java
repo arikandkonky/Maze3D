@@ -8,9 +8,26 @@ public abstract class MazeDisplayer extends Canvas {
 	int[][] mazeData;
 	private int ExitX;
 	private int ExitY;
-	private int setExitZ;
+	private int floorExit;
+	BasicWindow bs;
+	boolean won;
 	
 	
+	public BasicWindow getBs() {
+		return bs;
+	}
+
+	public boolean getIsWon(){
+		return won;}
+	
+	public void setIsWon(boolean is){
+		this.won = is;
+	}
+	public void setBs(BasicWindow bs) {
+		this.bs = bs;
+	}
+
+
 	public MazeDisplayer(Composite parent, int style) {
 		super(parent, style);
 		// TODO Auto-generated constructor stub
@@ -50,6 +67,8 @@ public abstract class MazeDisplayer extends Canvas {
 	}
 
 	public abstract void setfloorExit(int exit);
+	
+	public abstract int getfloorExit();
 
 	public void setExitY(int y) {
 		this.ExitY = y;		
@@ -63,11 +82,6 @@ public abstract class MazeDisplayer extends Canvas {
 		return ExitY;}
 
 
-
-	public void setExitZ(int z) {
-		this.setExitZ = z;
-		
-	}
 
 
 	public void setCurrentFloor(int currentFloor) {

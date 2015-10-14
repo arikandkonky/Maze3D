@@ -18,8 +18,10 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -108,64 +110,70 @@ public class MyModel extends Observable implements Model{
 	public synchronized void generatemazewithname(final String name, final String generator , final String floor, final String line, final String col)
 	{
 		if(floor.isEmpty()||line.isEmpty()||col.isEmpty()){errorNoticeToController("Wrong parameters use :generate 3d maze <name> <my3dgenerator/simple3dgenerator> <floor> <line> <col>" );}
-		Callable<Maze3d> generateMazeThread = new Callable<Maze3d>()
+		final Future<Maze3d> futuremaze  = c.submit(new Callable<Maze3d>() {
+			@Override
+			public Maze3d call() throws Exception 
+			{
+				Maze3dGenerator maze;
+				if(generator.equals("my3dgenerator"))
 				{
-					@Override
-					public Maze3d call() throws Exception 
-					{
-						Maze3dGenerator maze;
-						if(generator.equals("my3dgenerator"))
-						{
-							maze = new My3dGenerator();
-							errorNoticeToController("User: Generating maze with My3dGenerator with the given parameters");							
-								System.out.println("Generating");
-								stringtoMaze3d.put(name, maze.generate(new Integer(floor),new Integer(line),new Integer(col)));
-								setChanged();
-								modelCompletedCommand=2;
-								setData(name);
-								notifyObservers();	
-						}
-						else if(generator.equals("simplemaze3dgenerator"))
-						{
-							System.out.println("Heyy i get in!");
-							maze = new SimpleMaze3dGenerator();
-							errorNoticeToController("User: Generating maze with SimpleMaze3dGenerator with the given parameters");
-								System.out.println("Generating");
-								stringtoMaze3d.put(name, maze.generate(new Integer(floor),new Integer(line),new Integer(col)));
-								setChanged();
-								modelCompletedCommand=2;
-								setData(name);
-								notifyObservers();
-						}
-						else if(p.getDefAlgorithm().equals("My3dGenerator"))
-						{
-							maze = new My3dGenerator();
-							errorNoticeToController("Defualt: Generating maze with My3dGenerator with the given parameters");
-								System.out.println("Generating");
-								stringtoMaze3d.put(name, maze.generate(new Integer(floor),new Integer(line),new Integer(col)));
-								setChanged();
-								modelCompletedCommand=2;
-								setData(name);
-								notifyObservers();
-						}
-						else if(p.getDefAlgorithm().equals("simplemaze3dgenerator"))
-						{
-							maze = new SimpleMaze3dGenerator();
-							errorNoticeToController("Default: Generating maze with SimpleMaze3dGenerator with the given parameters");
+					maze = new My3dGenerator();
+					errorNoticeToController("User: Generating maze with My3dGenerator with the given parameters");							
+						System.out.println("Generating");
+						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));	
+				}
+				else if(generator.equals("simplemaze3dgenerator"))
+				{
+					System.out.println("Heyy i get in!");
+					maze = new SimpleMaze3dGenerator();
+					errorNoticeToController("User: Generating maze with SimpleMaze3dGenerator with the given parameters");
+						System.out.println("Generating");
+						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));
+						
+				}
+				else if(p.getDefAlgorithm().equals("My3dGenerator"))
+				{
+					maze = new My3dGenerator();
+					errorNoticeToController("Defualt: Generating maze with My3dGenerator with the given parameters");
+						System.out.println("Generating");
+						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));
+				}
+				else if(p.getDefAlgorithm().equals("simplemaze3dgenerator"))
+				{
+					maze = new SimpleMaze3dGenerator();
+					errorNoticeToController("Default: Generating maze with SimpleMaze3dGenerator with the given parameters");
+			
+						System.out.println("Generating");
+						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));
 					
-								System.out.println("Generating");
-								stringtoMaze3d.put(name, maze.generate(new Integer(floor),new Integer(line),new Integer(col)));
-								setChanged();
-								modelCompletedCommand=2;
-								setData(name);
-								notifyObservers();
-								return stringtoMaze3d.get(name);
-							
-						}
-					return null;
+				}
+			return null;
+			}
+		});
+
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					try {
+					Maze3d maze = futuremaze.get();
+					//maze = futuremaze.get();
+					stringtoMaze3d.put(name, maze);
+					setChanged();
+					modelCompletedCommand=2;
+					setData(name);
+					notifyObservers();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				};
-				c.submit(generateMazeThread);
+				}
+			});
+		
+			t.start();
+	
+
 	}
 
 	public synchronized void getMazeBygivenName(String name)
@@ -599,8 +607,110 @@ public class MyModel extends Observable implements Model{
 		}
 		
 	}
+	
+	@Override
+	public void solveMazeUserOnepoint(final String name) {
+		{
+			if(stringtoMaze3d.containsKey(name))
+			{
+				if(solutionMap.containsKey(stringtoMaze3d.get(name)))
+				{
+					this.modelCompletedCommand = 12;
+					Object[] dataSet = new Object[2];
+					dataSet[0] = name;
+					dataSet[1] = solutionMap.get(stringtoMaze3d.get(name));
+					setChanged();
+					this.setData(dataSet);
+					notifyObservers();
+				}
+				else{errorNoticeToController("this maze didnt solve yet");}
+			}
+			else{errorNoticeToController("this maze didnt solve yet");}
+		}
+		/*
+		int X = new Integer(x);
+		int Y = new Integer(y);
+		int Z = new Integer(z);
+		Maze3d maze = stringtoMaze3d.get(name);
+		Maze3dPosition mazeStartPosition = new Maze3dPosition(X, Y, Z);
+		maze.setStartPosition(mazeStartPosition);
+		stringtoMaze3d.put((name+""+x+""+y+""+z), maze);
+		if(solutionMap.containsKey(stringtoMaze3d.get(name+""+x+""+y+""+z))){
+		Solution<Position> Solutionmap = solutionMap.get(stringtoMaze3d.get(name+""+x+""+y+""+z));
+		
+		for(State<Position> aa : Solutionmap.getSolution())
+		{
+			System.out.println(aa.getActionName().toString());
+		}
+		}
+		if(stringtoMaze3d.containsKey(name+""+x+""+y+""+z))
+		{
+			if(solutionMap.containsKey(stringtoMaze3d.get(name+""+x+""+y+""+z)))
+			{
+				System.out.println("alrdy solved this maze, wont do it again..");
+				this.modelCompletedCommand=12;
+				this.setData(name);
+				System.out.println(stringtoMaze3d.get(name+""+x+""+y+""+z).getGoalPosition().toString());
+				System.out.println("GOAL POSITION#$%#$%$#%$#%: "+ solutionMap.get(stringtoMaze3d.get(name+""+x+""+y+""+z)).toString());
+				setChanged();
+				notifyObservers();
+			}
+			else
+			{
+				Callable<Solution<Position>> mazeSolver =new Callable<Solution<Position>>() {
+					@SuppressWarnings({ "unchecked", "rawtypes" })
+					@Override
+					public Solution<Position> call() throws Exception 
+					{
+						Maze3d maze = stringtoMaze3d.get((name+""+x+""+y+""+z));
+						Searchable<Position> s = new Maze3dSearch(maze);
+						System.out.println("GOAL POSITION#$%#$%$#%$#%: "+ stringtoMaze3d.get(name+""+x+""+y+""+z).getGoalPosition().toString());
+						Maze3DSolution solution = new Maze3DSolution();
+						if(p.getDefSolver().equals("bfs"))
+						{
+							System.out.println("Solve with defualt bfs");
+							BfsCommonSearcher Bfs = new BfsCommonSearcher(solution);
+							Bfs.setSolution(solution);
+							
+							solutionMap.put(stringtoMaze3d.get(name), (Maze3DSolution)Bfs.Search(s));
+							OneStatesolveMazeByBfs(name);
+						}
+						else if(p.getDefSolver().equals("astar"))
+						{
+							System.out.println("solve with default astar, Manhetthen distance");
+							Manhattandistance h2 = new Manhattandistance();
+							AstarCommonSearcher Astar = new AstarCommonSearcher<>(h2, solution, s);
+							Astar.setSolution(solution);
+							System.err.println(solution.toString());
+							solutionMap.put(stringtoMaze3d.get(name), (Maze3DSolution)Astar.Search(s));
+							OneStatesolveMazeByAstar(name);
+						}
+							return null;
+					}
+				};c.submit(mazeSolver);
+			}
+		}
+		*/
+	}
+	
+	private void OneStatesolveMazeByAstar(String name) {
+		//Solution<Position> solution = solutionMap.get(stringtoMaze3d.get(name));
+		this.modelCompletedCommand= 12;
+		setChanged();
+		setData(name);
+		notifyObservers();
+	}
+	private void OneStatesolveMazeByBfs(String name) {
+		//Solution<Position> solution = solutionMap.get(stringtoMaze3d.get(name));
+		this.modelCompletedCommand= 12;
+		setChanged();
+		setData(name);
+		notifyObservers();
+	}
+		
+	}
 
 
 
 	
-}
+
