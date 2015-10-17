@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -14,13 +15,14 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Group;
+//import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -33,7 +35,7 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
 import presenter.Command;
-import presenter.Controller;
+//import presenter.Controller;
 
 public class MazeWindow extends BasicWindow {
 
@@ -44,8 +46,8 @@ public class MazeWindow extends BasicWindow {
 	BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
 	PrintWriter out=new PrintWriter(System.out);
 	int userCommand=0;
-	private CLI cli;
-	private Controller controller;
+	//private CLI cli;
+	//private Controller controller;
 	Maze3d AllMaze;
 	Maze3d mazeData;
 	int[][] crossedArr;
@@ -65,6 +67,8 @@ public class MazeWindow extends BasicWindow {
 	GridData grid;
 	TabFolder tab;
 	TabItem tabitem;
+	SashForm sashForm2;
+	boolean hint=false;
 	
 	
 
@@ -77,6 +81,8 @@ public class MazeWindow extends BasicWindow {
 	
 	@Override
 	public void initWidgets() {
+		FontData defaultFont = new FontData("Castellar",10,SWT.BOLD);
+		org.eclipse.swt.graphics.Font boldFont = new org.eclipse.swt.graphics.Font(display, defaultFont);
 	    shell.setText("Maze 3D Game By Arik and Nir");
 	    shell.setSize(800,600);
 		shell.setLayout(new GridLayout(2,false));
@@ -99,9 +105,11 @@ public class MazeWindow extends BasicWindow {
 		Image bGImage = new Image(display, "C:/Maze.png");
 	    sashForm.setBackgroundImage(bGImage);
 
-		 final Button randomGenerator = new Button(sashForm,SWT.PUSH);
-		 randomGenerator.setText("RandomGenerator");
+		 Button randomGenerator = new Button(sashForm,SWT.PUSH);
+		 randomGenerator.setText("Generate");
+		 randomGenerator.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 		 randomGenerator.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
+		 randomGenerator.setFont(boldFont);
 		 
 		 
 		 randomGenerator.addSelectionListener(new SelectionListener() {
@@ -124,13 +132,18 @@ public class MazeWindow extends BasicWindow {
 	    //!--------------- Initial StartBottom---------------------! 
 	  	final Button startButton=new Button(sashForm, SWT.PUSH);
 	  	startButton.setText("Start");
+	  	startButton.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+	  	startButton.setFont(boldFont);
 	  	startButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
 	  				
 	  	//!--------------- Initial Stop Bottom---------------------! 
 	  	final Button stopButton=new Button(sashForm, SWT.PUSH);
 	  	stopButton.setText("Stop");
+	  	stopButton.setFont(boldFont);
+	  	stopButton.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+
 	  	stopButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
-	  	stopButton.setEnabled(false);	
+	  	stopButton.setEnabled(false);
 	    
 		//!---------------startButton Listener---------------------! 
 	  	startButton.addSelectionListener(new SelectionListener() {
@@ -168,6 +181,7 @@ public class MazeWindow extends BasicWindow {
 				timer.cancel();
 				startButton.setEnabled(true);
 				stopButton.setEnabled(false);
+				started = false;
 			}
 			
 			@Override
@@ -176,18 +190,23 @@ public class MazeWindow extends BasicWindow {
 	  	
 		  Button helpsolvemazeItem = new Button(sashForm,SWT.PUSH);
 		    helpsolvemazeItem.setText("Solve");
+		    helpsolvemazeItem.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+		    helpsolvemazeItem.setFont(boldFont);
 			//!---------------get solve Listener---------------------! 
 		    helpsolvemazeItem.addSelectionListener(new SelectionListener() {
 				
 				@Override
 				public void widgetSelected(SelectionEvent arg0) {
+					hint = false;
 					int newStartPositionY = maze.getCharacterX();
 					int newStartPositionZ = maze.getCharacterY();
 					int FloorX = currentFloor;
-					//Maze3d maze = AllMaze;
-					//HashMap<String, Command> viewCommandMap = getViewCommandMap();
 					helpSolveUserMazefromPoint(MatrixName,FloorX,newStartPositionY,newStartPositionZ);
-					shell.layout();
+					/*MessageBox ErrorBox = new MessageBox(shell);
+					ErrorBox.setText("Won!!! :)");
+					ErrorBox.setMessage("Nice you solve the Maze With little Help :P");
+					ErrorBox.open();
+					//shell.layout();*/
 				}
 				
 				@Override
@@ -198,7 +217,7 @@ public class MazeWindow extends BasicWindow {
 			});
 	    
 
-	    SashForm sashForm2 = new SashForm(tab, SWT.VERTICAL);
+	    sashForm2 = new SashForm(tab, SWT.VERTICAL);
         //**************Initail Name/Floors/Line/Col***********************/
 		
 		grid = new GridData();
@@ -207,6 +226,7 @@ public class MazeWindow extends BasicWindow {
 		
 		Label lbMatrixName = new Label(sashForm2, SWT.NULL);
 	    lbMatrixName.setText("Maze Name:");
+	    lbMatrixName.setFont(boldFont);
 	    
 	    txtMatrixName = new Text(sashForm2, SWT.BORDER);
 	    txtMatrixName.setLayoutData(grid);
@@ -214,6 +234,7 @@ public class MazeWindow extends BasicWindow {
 	    
 		Label lbFloor = new Label(sashForm2, SWT.NONE);
 	    lbFloor.setText("Floors:");
+	    lbFloor.setFont(boldFont);
 
 	    txtFloor = new Text(sashForm2, SWT.BORDER);
 	    txtFloor.setLayoutData(grid);
@@ -221,25 +242,26 @@ public class MazeWindow extends BasicWindow {
 	    
 	    Label lbLine = new Label(sashForm2, SWT.NONE);
 	    lbLine.setText("Lines:");
-
+	    lbLine.setFont(boldFont);
+	    
 	    txtLine = new Text(sashForm2, SWT.BORDER);
 	    txtLine.setLayoutData(grid);
 	    txtLine.setText("Number of Lines?");
 	     
 	     Label lbCol = new Label(sashForm2, SWT.NONE);
 		 lbCol.setText("Col:");
-
+		 lbCol.setFont(boldFont);
+		 
 		 txtCol = new Text(sashForm2, SWT.BORDER);
 		 txtCol.setLayoutData(grid);
 		 txtCol.setText("Number of Columns?");
 		 
-		 //tab1.setControl(sashForm2);
 
 		 //************Initial Enter Button*******************/
 		 final Button EnterButton=new Button(sashForm2, SWT.PUSH);
 		 EnterButton.setText("Enter");
 		 EnterButton.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
-		 
+		 EnterButton.setFont(boldFont);
 		 
 		 
 		//!--------------- Initial the Enter Listener---------------------! 
@@ -292,7 +314,7 @@ public class MazeWindow extends BasicWindow {
 					ErrorBox.setMessage("Generating...");
 					ErrorBox.open();
 					initMaze(txtMatrixName.getText().toString(),txtFloor.getText().toString(),txtLine.getText().toString(),txtCol.getText().toString());
-					initKeyListeners();
+					//initKeyListeners();
 				}
 				
 			}
@@ -334,22 +356,23 @@ public class MazeWindow extends BasicWindow {
 
 	    Button helpGetHelpItem = new Button(sashForm, SWT.PUSH);
 	    helpGetHelpItem.setText("Hint");
-	    
+	    helpGetHelpItem.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+	    helpGetHelpItem.setFont(boldFont);
 		//!---------------get Hint Listener---------------------! 
 	    helpGetHelpItem.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				int newStartPositionY = maze.getCharacterX();
-				int newStartPositionZ = maze.getCharacterY();
-				int FloorX = currentFloor;
-				//System.out.println(helpGetHelpItem.getID());
-				hintSolveUserMazefromPoint(MatrixName,FloorX,newStartPositionY,newStartPositionZ);
-				MessageBox ErrorBox = new MessageBox(shell);
-				ErrorBox.setText("Help!!! :)");
-				ErrorBox.setMessage("A Little Help...");
-				ErrorBox.open();
-				//shell.layout();
+						hint = true;
+						int newStartPositionY = maze.getCharacterX();
+						int newStartPositionZ = maze.getCharacterY();
+						int FloorX = currentFloor;
+						helpSolveUserMazefromPoint(MatrixName,FloorX,newStartPositionY,newStartPositionZ);
+						MessageBox ErrorBox = new MessageBox(shell);
+						ErrorBox.setText("Won!!! :)");
+						ErrorBox.setMessage("Nice you solve the Maze With little Help :P");
+						ErrorBox.open();
+						//shell.layout();
 			}
 			
 			@Override
@@ -401,13 +424,9 @@ public class MazeWindow extends BasicWindow {
 	 	    }
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 	      });
-		  //!---------------Image background---------------------! 
-	    //Image image = new Image(display,"C:\file.png");
-	    //label.setImage(image);
 	    sashForm.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLUE));
 	    sashForm2.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLUE));
 
@@ -419,10 +438,10 @@ public class MazeWindow extends BasicWindow {
 	{
 		try {
 			
-			String[] mazeArgs =  {"Konky","My3dGenerator","2","9","9"};
+			String[] mazeArgs =  {"newMaze","My3dGenerator","1","8","8"};
 			this.viewCommandMap.get("generate 3d maze").doCommand(mazeArgs);
 			this.MatrixName = mazeArgs[0];
-	        shell.layout();
+	       // shell.layout();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -434,13 +453,10 @@ public class MazeWindow extends BasicWindow {
 			maze=new Maze3D(shell, SWT.BORDER);
 			initKeyListeners();
 		}
-		//initKeyListeners();
 		String[] mazeArgs =  {Name,"My3dGenerator",Floor,Line,Col};
 		this.viewCommandMap.get("generate 3d maze").doCommand(mazeArgs);
 		this.MatrixName = mazeArgs[0];
-		//maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
         maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,2));
-        //shell.layout();
 	}
 	
 	public void printMatrix(int[][] arr)
@@ -496,7 +512,6 @@ public class MazeWindow extends BasicWindow {
 						maze=new Maze3D(shell, SWT.BORDER);
 						initKeyListeners();
 					}
-					//initKeyListeners();
 					maze.setIsWon(false);
 			        maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,2));
 			    	out.println("Maze name: "+ name + "\n" + maze3dName.toString());
@@ -532,11 +547,6 @@ public class MazeWindow extends BasicWindow {
 		String strZ = "" + stringZ;
 		String[] mazeToSolve =  {MatrixName,strX,strY,strZ};
 		this.viewCommandMap.get("Solve Maze Point").doCommand(mazeToSolve);
-		String[] displaySolutionString = {MatrixName +""+X+""+Y+""+Z};
-		this.viewCommandMap.get("display solution").doCommand(displaySolutionString);
-		//maze.redraw();
-		//shell.layout();
-		
 	}
 	
 
@@ -550,8 +560,6 @@ public class MazeWindow extends BasicWindow {
 			@Override
 			public void keyReleased(KeyEvent e) 
 			{
-				//if (maze.getIsWon()== false)
-				//{
 				if(started == true)
 				{
 					System.out.println(e.toString());
@@ -590,7 +598,6 @@ public class MazeWindow extends BasicWindow {
 		              }
 					if(maze.getCharacterX()==maze.getExitX() && maze.getCharacterY()==maze.getExitY()&&currentFloor==maze.getfloorExit())
 					{
-						//System.out.println("im here");
 						MessageBox ErrorBox = new MessageBox(shell);
 						ErrorBox.setText("Won!!! :)");
 						ErrorBox.setMessage("Nice you solve the Maze Good Job!");
@@ -607,14 +614,6 @@ public class MazeWindow extends BasicWindow {
                         	 break;
                     }
                 }
-			//}
-				//else
-				//{
-				//	MessageBox ErrorBox = new MessageBox(shell);
-				//	ErrorBox.setText("Won!!! :)");
-				//	ErrorBox.setMessage("Nice you solve the Maze Good Job!");
-				//}
-			//	started = false;
 			}
 			@Override
 			public void keyPressed(KeyEvent e) 
@@ -644,12 +643,8 @@ public class MazeWindow extends BasicWindow {
 
 			if(currentFloor>=0&&currentFloor<(this.mazeData.getMaze().length-1))
 			{
-				System.out.println("Prepering to go up from floor: "+ currentFloor);
-				System.out.println(this.mazeData.getMaze().length-1 + "," + currentFloor);
 				int[][] crossedArrToCheck = this.mazeData.getCrossSectionByX(currentFloor+1);
-				System.out.println("Page Up!!!! The next floor is: ");
 				printMatrix(crossedArrToCheck);
-				System.out.println("Char position: "+ maze.getCharacterX() + "," + maze.getCharacterY());
 				if(crossedArrToCheck[maze.getCharacterX()][maze.getCharacterY()]==0)
 				{
 					this.crossedArr = crossedArrToCheck;
@@ -674,11 +669,7 @@ public class MazeWindow extends BasicWindow {
 			System.out.println("CurrentFloor: "+ currentFloor + " MazeLength: " + (this.mazeData.getMaze().length) );
 			if(currentFloor>=1&&currentFloor<=(this.mazeData.getMaze().length-1))
 			{
-				System.out.println("Prepering to go down from floor: "+ currentFloor);
 				int[][] crossedArrToCheck = this.mazeData.getCrossSectionByX(currentFloor-1);
-				System.out.println("Page Down!!!! The next floor is: ");
-				printMatrix(crossedArrToCheck);
-				System.out.println("Char position: ("+ maze.getCharacterX() + "," + maze.getCharacterY()+")");
 				if(crossedArrToCheck[maze.getCharacterX()][maze.getCharacterY()]==0)
 				{
 					this.crossedArr = crossedArrToCheck;
@@ -701,7 +692,7 @@ public class MazeWindow extends BasicWindow {
 		return false;
 	}
 	
-	public void hintSolveUserMazefromPoint(String MatrixName, int X, int Y, int Z)
+	/*public void hintSolveUserMazefromPoint(String MatrixName, int X, int Y, int Z)
 	{
 		int stringX = X;
 		String strX = "" + stringX;
@@ -709,11 +700,11 @@ public class MazeWindow extends BasicWindow {
 		String strY = "" + stringY;
 		int stringZ = Z;
 		String strZ = "" + stringZ;
+		System.out.println("("+strX+","+strY+","+strZ+")");
 		String[] mazeToSolve =  {MatrixName,strX,strY,strZ};
 		this.viewCommandMap.get("Solve Maze Point").doCommand(mazeToSolve);
-		String[] displaySolutionString = {MatrixName +""+X+""+Y+""+Z};
-		this.viewCommandMap.get("display solution one").doCommand(displaySolutionString);
-	}
+		
+	}*/
 
 	@Override
 	public void userprintCrossBySection(int[][] section, String xyz, String index, String name) {
@@ -734,83 +725,101 @@ public class MazeWindow extends BasicWindow {
 	public void userSizeOfFile(String filename, Double s) {out.println("The file size of the file name: "+ filename + " by bytes: "+ s);}
 
 	@Override
-	public void userSolutionReady(String name) {out.println("The solution of maze name: "+ name + " is Ready!");}
+	public void userSolutionReady(String name) {
+		//System.out.println(name+"test");
+		//System.out.println("name!!!!!!!!!!!!!!!!!!!!!11"+ name);
+		String[] displaySolutionString = {name};
+		this.viewCommandMap.get("display solution").doCommand(displaySolutionString);
+	}
 
-	@Override
-	
 	public void userprintSolution(final String name, final Solution<Position> solution)
 	{
-		System.out.println("before the thread");
+		//System.out.println("Answer!!!!!!!!!!!!!!!!!!!!!!!");
+		//for (State<Position> p : solution.getSolution())
+		//{
+		//	System.out.println(p.getActionName().toString());
+		//}
+		//System.out.println("Answer!!!!!!!!!!!!!!!!!!!!!!!");
+
+		System.out.println("Maze Name: With Solution "+name);
+
 		Thread t = new Thread(new Runnable()
-		{
-			
-			@Override
-			public void run()
 			{
-				System.out.println("in the Run!");
-				// TODO Auto-generated method stub
-				out.println("View: \n Solution of maze :" + name + "\n");
-				out.flush();
-				SolutionHelp = solution;
-				out.println(solution.toString());
-				out.println("Goal Position: "+ "In Floor: "+ AllMaze.getGoalPosition().getX() + " In Position: ("+AllMaze.getGoalPosition().getY()+","+AllMaze.getGoalPosition().getZ()+")");
-				for(State<Position> p :solution.getSolution())
+				@Override
+				public void run()
 				{
-					System.out.println(p.getActionName().toString());
-					switch (p.getActionName()) 
+				if (hint == false)
+				{
+					for(State<Position> p :solution.getSolution())
 					{
-					case "FloorUp":
+						System.out.println(p.getActionName().toString());
+						switch (p.getActionName()) 
+						{
+						case "FloorUp":PageUpDown("Up");maze.moveFloorUp();
+							break;
+						case "FloorDown":PageUpDown("Down");maze.moveFloorDown();
+							break;
+						case "LineForward":maze.moveDown();
+						
+							break;
+						case "LineBackward":maze.moveUp();
+						
+							break;
+						case "ColRight":maze.moveRight();
+						
+							break;
+						case "ColLeft":maze.moveLeft();						
+							break;
+						default:
+							break;
+						}
+						try 
+						{
+							Thread.sleep(250);                 //250 milliseconds is one second.
+						} catch(InterruptedException ex){ex.printStackTrace();}
+					}
+				}
+				else if (hint == true)
+				{
+					ArrayList<State<Position>> p = solution.getSolution();	
+					System.out.println(p.get(0).getActionName().toString());
+					switch (p.get(0).getActionName().toString()) 
+					{
+						case "FloorUp":
 							PageUpDown("Up");
 							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
 							maze.moveFloorUp();
-						break;
-					case "FloorDown":
+							break;
+						case "FloorDown":
 							PageUpDown("Down");
 							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
 							maze.moveFloorDown();
-						break;
-					case "LineForward":
-						maze.moveDown();
-						System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
-						
-						break;
-					case "LineBackward":
-						maze.moveUp();
-						System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
-						
-						break;
-					case "ColRight":
-						maze.moveRight();
-						System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
-						
-						break;
-					case "ColLeft":
-						maze.moveLeft();
-						System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
-						
-						break;
-					default:
-						break;
-					}
-					try 
-					{
-					    Thread.sleep(1000);                 //1000 milliseconds is one second.
-					} catch(InterruptedException ex)
-					{
-					    Thread.currentThread().interrupt();
+							break;
+						case "LineForward":
+							maze.moveDown();
+							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
+							break;
+						case "LineBackward":
+							maze.moveUp();
+							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
+							break;
+						case "ColRight":
+							maze.moveRight();
+							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
+							break;
+						case "ColLeft":
+							maze.moveLeft();
+							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
+							break;
+						default:
+							break;
 					}
 				}
-				}
-			
+		}
 		});
 		t.start();
-		MessageBox ErrorBox = new MessageBox(shell);
-		ErrorBox.setText("Won!!! :)");
-		ErrorBox.setMessage("Nice you solve the Maze With little Help :P");
-		ErrorBox.open();
-		maze.redraw();
-		shell.layout();
-	}	
+	}
+
 	
 		
 	
@@ -870,78 +879,15 @@ public class MazeWindow extends BasicWindow {
 
 	@Override
 	public void oneStateDisplay(final String name, final Solution<Position> solution) {
-		{
+	}
+	
+	
+}
 
-			Thread t2 = new Thread(new Runnable()
-			{
-				
-				@Override
-				public void run()
-				{
-					System.out.println("in the Run!");
-					// TODO Auto-generated method stub
-					out.println("View: \n Solution of maze :" + name + "\n");
-					out.flush();
-					SolutionHelp = solution;
-					out.println(solution.toString());
-					out.println("Goal Position: "+ "In Floor: "+ AllMaze.getGoalPosition().getX() + " In Position: ("+AllMaze.getGoalPosition().getY()+","+AllMaze.getGoalPosition().getZ()+")");
-					//for(State<Position> p :solution.getSolution())
-					//{
-					ArrayList<State<Position>> p = solution.getSolution();
-					
-						System.out.println(p.get(0).getActionName().toString());
-						switch (p.get(0).getActionName().toString()) 
-						{
-						case "FloorUp":
-								PageUpDown("Up");
-								System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
-								maze.moveFloorUp();
-							break;
-						case "FloorDown":
-								PageUpDown("Down");
-								System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
-								maze.moveFloorDown();
-							break;
-						case "LineForward":
-							maze.moveDown();
-							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
-							
-							break;
-						case "LineBackward":
-							maze.moveUp();
-							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
-							
-							break;
-						case "ColRight":
-							maze.moveRight();
-							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
-							
-							break;
-						case "ColLeft":
-							maze.moveLeft();
-							System.out.println("Position At: ("+ maze.getCharacterX() +","+maze.getCharacterY()+")");
-							
-							break;
-						default:
-							break;
-						}
-						try 
-						{
-						    Thread.sleep(1000);                 //1000 milliseconds is one second.
-						} catch(InterruptedException ex)
-						{
-						    Thread.currentThread().interrupt();
-						}
-					}
-				//	}
-				
-			});
-			t2.start();
-			maze.redraw();
-			shell.layout();
-		}	
-}
-}
+
+
+
+
 		
 	
 	
