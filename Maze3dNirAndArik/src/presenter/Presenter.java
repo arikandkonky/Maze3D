@@ -327,6 +327,7 @@ public class Presenter implements Observer {
 				try {model.getSolution(args[0]);
 					
 				} catch (Exception e) {
+					//System.out.println(args[0]+"badd");
 					e.printStackTrace();
 					view.errorNoticeToUser("Error: bad Args");
 				}
@@ -426,6 +427,7 @@ public class Presenter implements Observer {
 				
 			case 10:
 				dataSet = (Object[]) model.getData();
+				System.out.println(dataSet[0]+""+dataSet[1]);
 				view.userprintSolution((String)dataSet[0], (Solution<Position>)dataSet[1]);
 				break;
 				

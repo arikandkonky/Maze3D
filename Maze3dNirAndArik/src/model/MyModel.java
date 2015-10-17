@@ -546,86 +546,89 @@ public class MyModel extends Observable implements Model{
 		int X = new Integer(x);
 		int Y = new Integer(y);
 		int Z = new Integer(z);
-		Maze3d maze = stringtoMaze3d.get(name);
+		final String mazenewStart = name+x+y+z;
+		//System.out.println("making solution from Position:"+);
 		Maze3dPosition mazeStartPosition = new Maze3dPosition(X, Y, Z);
+		final Maze3d maze = stringtoMaze3d.get(name);
 		maze.setStartPosition(mazeStartPosition);
-		stringtoMaze3d.put((name+""+x+""+y+""+z), maze);
-		if(solutionMap.containsKey(stringtoMaze3d.get(name+""+x+""+y+""+z))){
-		Solution<Position> Solutionmap = solutionMap.get(stringtoMaze3d.get(name+""+x+""+y+""+z));
-		
-		for(State<Position> aa : Solutionmap.getSolution())
-		{
-			System.out.println(aa.getActionName().toString());
-		}
-		}
-		if(stringtoMaze3d.containsKey(name+""+x+""+y+""+z))
-		{
-			if(solutionMap.containsKey(stringtoMaze3d.get(name+""+x+""+y+""+z)))
+		stringtoMaze3d.put(mazenewStart, maze);
+			if(solutionMap.containsKey(maze))
 			{
 				System.out.println("alrdy solved this maze, wont do it again..");
 				this.modelCompletedCommand=9;
-				this.setData(name);
-				System.out.println(stringtoMaze3d.get(name+""+x+""+y+""+z).getGoalPosition().toString());
-				System.out.println("GOAL POSITION#$%#$%$#%$#%: "+ solutionMap.get(stringtoMaze3d.get(name+""+x+""+y+""+z)).toString());
+				this.setData(mazenewStart);
 				setChanged();
 				notifyObservers();
 			}
 			else
 			{
-				Callable<Solution<Position>> mazeSolver =new Callable<Solution<Position>>() {
+				
+				Future<Solution<Position>> f= c.submit(new Callable<Solution<Position>>() {
 					@SuppressWarnings({ "unchecked", "rawtypes" })
 					@Override
 					public Solution<Position> call() throws Exception 
 					{
-						Maze3d maze = stringtoMaze3d.get((name+""+x+""+y+""+z));
+						//Maze3d maze = stringtoMaze3d.get((name+""+x+""+y+""+z));
 						Searchable<Position> s = new Maze3dSearch(maze);
-						System.out.println("GOAL POSITION#$%#$%$#%$#%: "+ stringtoMaze3d.get(name+""+x+""+y+""+z).getGoalPosition().toString());
 						Maze3DSolution solution = new Maze3DSolution();
 						if(p.getDefSolver().equals("bfs"))
 						{
 							System.out.println("Solve with defualt bfs");
 							BfsCommonSearcher Bfs = new BfsCommonSearcher(solution);
 							Bfs.setSolution(solution);
-							
-							solutionMap.put(stringtoMaze3d.get(name), (Maze3DSolution)Bfs.Search(s));
-							solveMazeByBfs(name);
+							//solveMazeByBfs(mazenewStart);
+							return (Maze3DSolution)Bfs.Search(s);
 						}
 						else if(p.getDefSolver().equals("astar"))
 						{
-							System.out.println("solve with default astar, Manhetthen distance");
-							Manhattandistance h2 = new Manhattandistance();
-							AstarCommonSearcher Astar = new AstarCommonSearcher<>(h2, solution, s);
-							Astar.setSolution(solution);
-							System.err.println(solution.toString());
-							solutionMap.put(stringtoMaze3d.get(name), (Maze3DSolution)Astar.Search(s));
-							solveMazeByAstar(name);
+							try {
+								System.out.println("solve with default astar, Manhetthen distance");
+								Manhattandistance h2 = new Manhattandistance();
+								AstarCommonSearcher Astar = new AstarCommonSearcher(h2, solution, s);
+								Astar.setSolution(solution);
+								System.err.println(solution.toString());
+								return (Maze3DSolution)Astar.Search(s);
+							} catch (Exception e) {
+								errorNoticeToController(e.getMessage());
+								e.printStackTrace();
+							}
+							
 						}
-							return null;
+						return solution;
 					}
-				};c.submit(mazeSolver);
+				});
+				try {
+					solutionMap.put(maze, f.get());
+					solveMazeByAstar(mazenewStart);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		
-	}
+	
 	
 	@Override
 	public void solveMazeUserOnepoint(final String name) {
 		{
-			if(stringtoMaze3d.containsKey(name))
-			{
+
 				if(solutionMap.containsKey(stringtoMaze3d.get(name)))
 				{
-					this.modelCompletedCommand = 12;
+					this.modelCompletedCommand = 10;
 					Object[] dataSet = new Object[2];
 					dataSet[0] = name;
 					dataSet[1] = solutionMap.get(stringtoMaze3d.get(name));
+					System.out.println("The maze is solved alrdy.");
 					setChanged();
 					this.setData(dataSet);
 					notifyObservers();
 				}
 				else{errorNoticeToController("this maze didnt solve yet");}
-			}
-			else{errorNoticeToController("this maze didnt solve yet");}
+
 		}
 		/*
 		int X = new Integer(x);
@@ -693,20 +696,7 @@ public class MyModel extends Observable implements Model{
 		*/
 	}
 	
-	private void OneStatesolveMazeByAstar(String name) {
-		//Solution<Position> solution = solutionMap.get(stringtoMaze3d.get(name));
-		this.modelCompletedCommand= 12;
-		setChanged();
-		setData(name);
-		notifyObservers();
-	}
-	private void OneStatesolveMazeByBfs(String name) {
-		//Solution<Position> solution = solutionMap.get(stringtoMaze3d.get(name));
-		this.modelCompletedCommand= 12;
-		setChanged();
-		setData(name);
-		notifyObservers();
-	}
+
 		
 	}
 

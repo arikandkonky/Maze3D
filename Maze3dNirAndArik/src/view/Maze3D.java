@@ -90,7 +90,6 @@ public class Maze3D extends MazeDisplayer {
 					        	  /* Draw Exit */ 
 						          if(i==exitX && j==exitY && floorExit == currentFloor){
 						        	  e.gc.setBackground(new Color(null,0,255,255));
-						        	  e.gc.setForeground(black);
 						        	  e.gc.fillRectangle((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
 						        	  e.gc.setBackground(new Color(null,0,100,200));
 						        	  e.gc.fillRectangle((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
@@ -123,12 +122,7 @@ public class Maze3D extends MazeDisplayer {
 			}
 		}
 		
-		/* (non-Javadoc)
-		 * @see view.MazeDisplayer#moveUp()
-		 */
-		/* (non-Javadoc)
-		 * @see view.MazeDisplayer#moveDown()
-		 */
+
 		public void moveFloorDown(){
 			moveCharacter(characterX, characterY);
 			
