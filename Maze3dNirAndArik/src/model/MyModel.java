@@ -1,9 +1,7 @@
 package model;
 
 import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,7 +11,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Observable;
@@ -38,7 +35,6 @@ import algorithms.search.Maze3DSolution;
 import algorithms.search.Maze3dSearch;
 import algorithms.search.Searchable;
 import algorithms.search.Solution;
-import algorithms.search.State;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 import presenter.Properties;
@@ -57,6 +53,7 @@ public class MyModel extends Observable implements Model{
 		//Constractor with 30 threads in the thread pool.
 	}
 	
+	@SuppressWarnings("unchecked")
 	public MyModel(Properties p) throws Exception
 	{
 		super();
@@ -303,6 +300,7 @@ public class MyModel extends Observable implements Model{
 	public void loadMazeToFile(String filename, String name) throws IOException{
 		File f = new File(filename);
 		if (f.exists()){
+			@SuppressWarnings("resource")
 			FileInputStream fileIn = new FileInputStream(filename);
 			byte[] buffer = new byte[12];
 			fileIn.read(buffer, 0, 12);
@@ -456,6 +454,7 @@ public class MyModel extends Observable implements Model{
 		if (file.exists())
 		{
 			this.modelCompletedCommand = 12;
+			@SuppressWarnings("resource")
 			XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
 			p.setDefAlgorithm((String) decoder.readObject());
 			p.setDefSolver((String) decoder.readObject());
@@ -497,21 +496,7 @@ public class MyModel extends Observable implements Model{
 	}
 	
 	
-	public Object getData() {
-		return data;
-	}
 
-	public void setData(Object data) {
-		this.data = data;
-	}
-
-	public int getModelCompletedCommand() {
-		return modelCompletedCommand;
-	}
-
-	public void setModelCompletedCommand(int modelCompletedCommand) {
-		this.modelCompletedCommand = modelCompletedCommand;
-	}
 	
 	public void exit()
 	{
@@ -619,6 +604,24 @@ public class MyModel extends Observable implements Model{
 				else{errorNoticeToController("this maze didnt solve yet");}
 		}
 	}		
+	
+	//*************************Getters and Setters Methonds***********************************//
+	
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
+	}
+
+	public int getModelCompletedCommand() {
+		return modelCompletedCommand;
+	}
+
+	public void setModelCompletedCommand(int modelCompletedCommand) {
+		this.modelCompletedCommand = modelCompletedCommand;
+	}
 }
 
 
