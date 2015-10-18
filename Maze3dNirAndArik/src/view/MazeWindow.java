@@ -658,20 +658,6 @@ public class MazeWindow extends BasicWindow {
 		}
 		return false;
 	}
-	
-	/*public void hintSolveUserMazefromPoint(String MatrixName, int X, int Y, int Z)
-	{
-		int stringX = X;
-		String strX = "" + stringX;
-		int stringY = Y;
-		String strY = "" + stringY;
-		int stringZ = Z;
-		String strZ = "" + stringZ;
-		System.out.println("("+strX+","+strY+","+strZ+")");
-		String[] mazeToSolve =  {MatrixName,strX,strY,strZ};
-		this.viewCommandMap.get("Solve Maze Point").doCommand(mazeToSolve);
-		
-	}*/
 
 	@Override
 	public void userprintCrossBySection(int[][] section, String xyz, String index, String name) {
