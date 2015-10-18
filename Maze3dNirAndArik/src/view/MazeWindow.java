@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -22,7 +21,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
-//import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -35,47 +33,38 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import algorithms.search.State;
 import presenter.Command;
-//import presenter.Controller;
 
 public class MazeWindow extends BasicWindow {
 
 	Timer timer;
 	TimerTask task;
-	TabItem tab1,tab2;
+	TabItem tab1,tab2,tabitem;
+	TabFolder tab;
 	public HashMap<String, Command> viewCommandMap;
 	BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
 	PrintWriter out=new PrintWriter(System.out);
 	int userCommand=0;
-	//private CLI cli;
-	//private Controller controller;
-	Maze3d AllMaze;
-	Maze3d mazeData;
+	Maze3d AllMaze,mazeData;
 	int[][] crossedArr;
 	MazeDisplayer maze;
-	//Label label = new Label(shell, SWT.NONE);
-	boolean started =false;
-	int currentFloor;
+	int currentFloor,FloorGoalPosition;
 	Menu menuBar, fileMenu, helpMenu;
-	MenuItem fileMenuHeader, helpMenuHeader;
-	MenuItem fileExitItem, fileSaveItem, helpGetHelpItem;
-	int FloorGoalPosition;
+	MenuItem fileMenuHeader, helpMenuHeader,fileExitItem, fileSaveItem, helpGetHelpItem,openProperties;
 	String MatrixName;
 	Solution<Position> SolutionHelp;
-	boolean flag = true;
-	Text txtFloor,txtLine,txtCol;
-	Text txtMatrixName;
+	boolean flag = true, hint = false,started =false;
+	Text txtFloor,txtLine,txtCol,txtMatrixName;
 	GridData grid;
-	TabFolder tab;
-	TabItem tabitem;
-	SashForm sashForm2;
-	boolean hint=false;
-	
+	SashForm sashForm2,sashForm;
+	Image bGImage;
+	Button startButton,stopButton,randomGenerator,helpsolvemazeItem,enterButton,hintButton;
+	Label lbFloor,lbMatrixName,lbCol,lbLine;
+
 	
 
 	public MazeWindow(String title, int width, int height,HashMap<String, Command> viewCommandMap) {
 		super(title, width, height);
 		this.viewCommandMap=viewCommandMap;
-		// TODO Auto-generated constructor stub
 	}
 
 	
@@ -89,8 +78,7 @@ public class MazeWindow extends BasicWindow {
 		
 		
 		GridData stretchGridData = new GridData();
-		//stretchGridData.verticalAlignment = GridData.FILL; 
-		//stretchGridData.grabExcessVerticalSpace = true;
+
 		
 		tab = new TabFolder(shell, SWT.NULL);
 		tab.setLayoutData(stretchGridData);
@@ -100,19 +88,16 @@ public class MazeWindow extends BasicWindow {
 	    tab2 = new TabItem(tab, SWT.None);
 	    tab2.setText("    Maze    ");
 		
-	    // Create the SashForm with HORIZONTAL
-	    SashForm sashForm = new SashForm(tab, SWT.VERTICAL);
-		Image bGImage = new Image(display, "C:/Maze.png");
+	    sashForm = new SashForm(tab, SWT.VERTICAL);
+		bGImage = new Image(display, "C:/Maze.png");
 	    sashForm.setBackgroundImage(bGImage);
 
-		 Button randomGenerator = new Button(sashForm,SWT.PUSH);
-		 randomGenerator.setText("Generate");
-		 randomGenerator.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-		 randomGenerator.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
-		 randomGenerator.setFont(boldFont);
-		 
-		 
-		 randomGenerator.addSelectionListener(new SelectionListener() {
+		randomGenerator = new Button(sashForm,SWT.PUSH);
+		randomGenerator.setText("Generate");
+		randomGenerator.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+		randomGenerator.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
+		randomGenerator.setFont(boldFont);
+		randomGenerator.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -130,14 +115,14 @@ public class MazeWindow extends BasicWindow {
 	    
 	    
 	    //!--------------- Initial StartBottom---------------------! 
-	  	final Button startButton=new Button(sashForm, SWT.PUSH);
+	  	startButton=new Button(sashForm, SWT.PUSH);
 	  	startButton.setText("Start");
 	  	startButton.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
 	  	startButton.setFont(boldFont);
 	  	startButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
 	  				
 	  	//!--------------- Initial Stop Bottom---------------------! 
-	  	final Button stopButton=new Button(sashForm, SWT.PUSH);
+	  	stopButton=new Button(sashForm, SWT.PUSH);
 	  	stopButton.setText("Stop");
 	  	stopButton.setFont(boldFont);
 	  	stopButton.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
@@ -187,14 +172,13 @@ public class MazeWindow extends BasicWindow {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
-	  	
-		  Button helpsolvemazeItem = new Button(sashForm,SWT.PUSH);
-		    helpsolvemazeItem.setText("Solve");
-		    helpsolvemazeItem.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-		    helpsolvemazeItem.setFont(boldFont);
-			//!---------------get solve Listener---------------------! 
-		    helpsolvemazeItem.addSelectionListener(new SelectionListener() {
-				
+		
+		helpsolvemazeItem = new Button(sashForm,SWT.PUSH);
+		helpsolvemazeItem.setText("Solve");
+		helpsolvemazeItem.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+		helpsolvemazeItem.setFont(boldFont);
+		//!---------------get solve Listener---------------------! 
+		helpsolvemazeItem.addSelectionListener(new SelectionListener() {		
 				@Override
 				public void widgetSelected(SelectionEvent arg0) {
 					hint = false;
@@ -202,11 +186,6 @@ public class MazeWindow extends BasicWindow {
 					int newStartPositionZ = maze.getCharacterY();
 					int FloorX = currentFloor;
 					helpSolveUserMazefromPoint(MatrixName,FloorX,newStartPositionY,newStartPositionZ);
-					/*MessageBox ErrorBox = new MessageBox(shell);
-					ErrorBox.setText("Won!!! :)");
-					ErrorBox.setMessage("Nice you solve the Maze With little Help :P");
-					ErrorBox.open();
-					//shell.layout();*/
 				}
 				
 				@Override
@@ -224,7 +203,7 @@ public class MazeWindow extends BasicWindow {
 		grid.grabExcessHorizontalSpace = false;
 		grid.horizontalAlignment = GridData.CENTER;
 		
-		Label lbMatrixName = new Label(sashForm2, SWT.NULL);
+		lbMatrixName = new Label(sashForm2, SWT.NULL);
 	    lbMatrixName.setText("Maze Name:");
 	    lbMatrixName.setFont(boldFont);
 	    
@@ -232,7 +211,7 @@ public class MazeWindow extends BasicWindow {
 	    txtMatrixName.setLayoutData(grid);
 	    txtMatrixName.setText("Maze Name?");
 	    
-		Label lbFloor = new Label(sashForm2, SWT.NONE);
+		lbFloor = new Label(sashForm2, SWT.NONE);
 	    lbFloor.setText("Floors:");
 	    lbFloor.setFont(boldFont);
 
@@ -240,7 +219,7 @@ public class MazeWindow extends BasicWindow {
 	    txtFloor.setLayoutData(grid);
 	    txtFloor.setText("Numbers Of Floors?");
 	    
-	    Label lbLine = new Label(sashForm2, SWT.NONE);
+	    lbLine = new Label(sashForm2, SWT.NONE);
 	    lbLine.setText("Lines:");
 	    lbLine.setFont(boldFont);
 	    
@@ -248,7 +227,7 @@ public class MazeWindow extends BasicWindow {
 	    txtLine.setLayoutData(grid);
 	    txtLine.setText("Number of Lines?");
 	     
-	     Label lbCol = new Label(sashForm2, SWT.NONE);
+	     lbCol = new Label(sashForm2, SWT.NONE);
 		 lbCol.setText("Col:");
 		 lbCol.setFont(boldFont);
 		 
@@ -258,20 +237,17 @@ public class MazeWindow extends BasicWindow {
 		 
 
 		 //************Initial Enter Button*******************/
-		 final Button EnterButton=new Button(sashForm2, SWT.PUSH);
-		 EnterButton.setText("Enter");
-		 EnterButton.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
-		 EnterButton.setFont(boldFont);
+		 enterButton=new Button(sashForm2, SWT.PUSH);
+		 enterButton.setText("Enter");
+		 enterButton.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
+		 enterButton.setFont(boldFont);
 		 
 		 
 		//!--------------- Initial the Enter Listener---------------------! 
-		 EnterButton.addSelectionListener(new SelectionListener() {
+		 enterButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
-				System.out.println("Floors: "+ txtFloor.getText().toString());
-				System.out.println("Lines: "+ txtLine.getText().toString());
-				System.out.println("Cols: "+ txtCol.getText().toString());
 				Integer intFloor = new Integer(txtFloor.getText().toString());
 				Integer intLine = new Integer(txtLine.getText().toString());
 				Integer intCol = new Integer(txtCol.getText().toString());
@@ -314,7 +290,6 @@ public class MazeWindow extends BasicWindow {
 					ErrorBox.setMessage("Generating...");
 					ErrorBox.open();
 					initMaze(txtMatrixName.getText().toString(),txtFloor.getText().toString(),txtLine.getText().toString(),txtCol.getText().toString());
-					//initKeyListeners();
 				}
 				
 			}
@@ -325,10 +300,7 @@ public class MazeWindow extends BasicWindow {
 				
 			}
 		});
-
-	    
-		
-		 
+	 
 		//!--------------- Initial the Menu Bar---------------------! 
 		menuBar = new Menu(shell, SWT.BAR);//menu bar
 		fileMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
@@ -344,22 +316,21 @@ public class MazeWindow extends BasicWindow {
 	    helpMenuHeader.setMenu(helpMenu);
 	    
 	    
-	  //!--------------- Initial the Menu in the Menu Bar---------------------! 
+	    //!--------------- Initial the Menu in the Menu Bar---------------------! 
 	    
-	    
-	    MenuItem openProperties = new MenuItem(fileMenu,SWT.PUSH);
+	    openProperties = new MenuItem(fileMenu,SWT.PUSH);
 	    openProperties.setText("&Open Properties");
 
 	    fileExitItem = new MenuItem(fileMenu, SWT.PUSH);
 	    fileExitItem.setText("&Exit");
 
 
-	    Button helpGetHelpItem = new Button(sashForm, SWT.PUSH);
-	    helpGetHelpItem.setText("Hint");
-	    helpGetHelpItem.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
-	    helpGetHelpItem.setFont(boldFont);
+	    hintButton = new Button(sashForm, SWT.PUSH);
+	    hintButton.setText("Hint");
+	    hintButton.setBackground(shell.getDisplay().getSystemColor(SWT.COLOR_BLACK));
+	    hintButton.setFont(boldFont);
 		//!---------------get Hint Listener---------------------! 
-	    helpGetHelpItem.addSelectionListener(new SelectionListener() {
+	    hintButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
@@ -434,14 +405,15 @@ public class MazeWindow extends BasicWindow {
 	    shell.setMenuBar(menuBar);
 	    tab2.setControl(sashForm);
 	}
+	
+	//**********************************View Methods**************************************//
 	private void initMaze() 
 	{
 		try {
 			
-			String[] mazeArgs =  {"newMaze","My3dGenerator","1","8","8"};
+			String[] mazeArgs =  {"newMaze","My3dGenerator","3","17","17"};
 			this.viewCommandMap.get("generate 3d maze").doCommand(mazeArgs);
 			this.MatrixName = mazeArgs[0];
-	       // shell.layout();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -473,7 +445,6 @@ public class MazeWindow extends BasicWindow {
 	}
 	
 	public void printToUserCrossedArray(int[][] crossedArr, String axe, String index, String name) {
-		System.out.println("Crossed Arr!!!");
 		this.crossedArr = crossedArr;
 		out.println("Crossed maze: "+name+ " by axe: "+axe+" with index: "+index);
 		out.flush();
@@ -482,7 +453,8 @@ public class MazeWindow extends BasicWindow {
 	
 
 	
-	//**********************************View Methods**************************************//
+	
+	
 	@Override
 	public void Userdir(String dirpath) {
 		out.println("Files and Dir in: "+dirpath+"\n");
@@ -498,7 +470,6 @@ public class MazeWindow extends BasicWindow {
 		this.MatrixName = name;
 		out.println("Maze: "+ name+ "Ready!");
 		a[0] = name;
-		System.out.println("usermazeisready");
 		this.viewCommandMap.get("display").doCommand(a);
 		}
 
@@ -506,7 +477,6 @@ public class MazeWindow extends BasicWindow {
 	public void userprintMazetouser(final Maze3d maze3dName, final String name) {
 		Display.getDefault().asyncExec(new Runnable() {
 		    public void run() {
-					System.out.println("im here!");
 					if(maze==null)
 					{
 						maze=new Maze3D(shell, SWT.BORDER);
@@ -514,15 +484,12 @@ public class MazeWindow extends BasicWindow {
 					}
 					maze.setIsWon(false);
 			        maze.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,2));
-			    	out.println("Maze name: "+ name + "\n" + maze3dName.toString());
 					FloorGoalPosition=maze3dName.getGoalPosition().getX();
 					maze.setExitX(maze3dName.getGoalPosition().getY());
 					maze.setExitY(maze3dName.getGoalPosition().getZ());
 					maze.setfloorExit(FloorGoalPosition);
-					System.out.println("Goal Position in Floor: "+ FloorGoalPosition + "in State: ("+maze.getExitX()+","+maze.getExitY()+")");
 					AllMaze = maze3dName;
 					mazeData = maze3dName;
-					System.out.println(maze3dName.toString());
 					crossedArr = maze3dName.getCrossSectionByX(maze3dName.getStartPosition().getX());
 					maze.mazeData = crossedArr;
 					printMatrix(maze.mazeData);
@@ -726,23 +693,12 @@ public class MazeWindow extends BasicWindow {
 
 	@Override
 	public void userSolutionReady(String name) {
-		//System.out.println(name+"test");
-		//System.out.println("name!!!!!!!!!!!!!!!!!!!!!11"+ name);
 		String[] displaySolutionString = {name};
 		this.viewCommandMap.get("display solution").doCommand(displaySolutionString);
 	}
 
 	public void userprintSolution(final String name, final Solution<Position> solution)
 	{
-		//System.out.println("Answer!!!!!!!!!!!!!!!!!!!!!!!");
-		//for (State<Position> p : solution.getSolution())
-		//{
-		//	System.out.println(p.getActionName().toString());
-		//}
-		//System.out.println("Answer!!!!!!!!!!!!!!!!!!!!!!!");
-
-		System.out.println("Maze Name: With Solution "+name);
-
 		Thread t = new Thread(new Runnable()
 			{
 				@Override
@@ -824,7 +780,7 @@ public class MazeWindow extends BasicWindow {
 		
 	
 	
-	//**********************************Getters And Setters********************************************//
+	//**********************************Getters And Setters + View Methods*********************//
 	
 	
 	

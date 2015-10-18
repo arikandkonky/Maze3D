@@ -8,7 +8,6 @@ import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 
-import java.util.Observer;
 import java.util.Observable;
 import model.Model;
 import view.View;
@@ -245,6 +244,7 @@ public class Presenter implements Observer {
 
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
 		if(o==view)
@@ -376,8 +376,6 @@ public class Presenter implements Observer {
 			Object[] dataSet;
 			switch (modelNum) {
 			case 1:
-				//System.out.println("***********Model:******");
-				//System.out.println(model.getData());
 				view.Userdir((String) model.getData());
 				break;
 
@@ -439,8 +437,7 @@ public class Presenter implements Observer {
 				dataSet = (Object[])model.getData();
 				view.oneStateDisplay((String)dataSet[0], (Solution<Position>)dataSet[1]);
 			case -1:
-				//System.out.println(model.getData().toString());
-				//view.errorNoticeToUser((String)model.getData());
+				view.errorNoticeToUser((String)model.getData());
 				break;
 				
 				

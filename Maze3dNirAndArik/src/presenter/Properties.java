@@ -2,6 +2,7 @@ package presenter;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Properties implements Serializable {
 	
 	protected int numofThreads;
@@ -57,7 +58,7 @@ public class Properties implements Serializable {
 	}
 	
 	public String toString(){
-		return "Properties: numThreads= "+numofThreads+" default Algorithm: "+ defAlgorithm +" defualt solver: "+ defSolver + "default UI: "+ UI;
+		return "Properties: \n numThreads: "+numofThreads+" default Algorithm: "+ defAlgorithm +" defualt solver: "+ defSolver + " default UI: "+ UI;
 	}
 	
 }

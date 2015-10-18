@@ -4,7 +4,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.widgets.Composite;
 
 public class Maze3D extends MazeDisplayer {
@@ -37,7 +36,9 @@ public class Maze3D extends MazeDisplayer {
 		public Maze3D(Composite parent, int style) {
 			super(parent, style);
 			
+			@SuppressWarnings("unused")
 			final Color white=new Color(null, 255, 255, 255);
+			@SuppressWarnings("unused")
 			final Color black=new Color(null, 150,150,150);
 			Image bGImage = new Image(getDisplay(), "C:/Maze.png");
 			setBackgroundImage(bGImage);
@@ -45,7 +46,6 @@ public class Maze3D extends MazeDisplayer {
 				
 				@Override
 				public void paintControl(PaintEvent e) {
-					   //e.gc.drawString(null, 10, 10);
 					   e.gc.setForeground(new Color(null,0,0,0));
 					   e.gc.setBackground(new Color(null,0,0,0));
 				
@@ -149,9 +149,6 @@ public class Maze3D extends MazeDisplayer {
 
 
 		}
-		/* (non-Javadoc)
-		 * @see view.MazeDisplayer#moveLeft()
-		 */
 		@Override
 		public void moveLeft() {
 			int x=characterX;
@@ -160,9 +157,7 @@ public class Maze3D extends MazeDisplayer {
 			moveCharacter(x, y);
 
 		}
-		/* (non-Javadoc)
-		 * @see view.MazeDisplayer#moveRight()
-		 */
+
 		@Override
 		public void moveRight() {
 			int x=characterX;
@@ -178,46 +173,32 @@ public class Maze3D extends MazeDisplayer {
 			characterY=col;
 			moveCharacter(row,col);
 		}
-		public int getCharacterX() {
-			return this.characterX;
-		}
-		public void setCharacterX(int characterX) {
-			this.characterX = characterX;
-		}
-		public int getCharacterY() {
-			return this.characterY;
-		}
-		public void setCharacterY(int characterY) {
-			this.characterY = characterY;
-		}
-		public int getExitX() {
-			return exitX;
-		}
-		public void setExitX(int exitX) {
-			this.exitX = exitX;
-		}
-		public int getExitY() {
-			return exitY;
-		}
-		public void setExitY(int exitY) {
-			this.exitY = exitY;
-		}
-
-		public int getCurrentFloor() {
-			return currentFloor;
-		}
-		public void setCurrentFloor(int currentFloor) {
-			this.currentFloor = currentFloor;
-		}
+		
+		//*******************Getters And Setters!*********************************//
+		public int getCharacterX() {return this.characterX;}
+		
+		public void setCharacterX(int characterX) {this.characterX = characterX;}
+		
+		public int getCharacterY() {return this.characterY;}
+		
+		public void setCharacterY(int characterY) {this.characterY = characterY;}
+		
+		public int getExitX() {return exitX;}
+		
+		public void setExitX(int exitX) {this.exitX = exitX;}
+		
+		public int getExitY() {return exitY;}
+		
+		public void setExitY(int exitY) {this.exitY = exitY;}
+		
+		public int getCurrentFloor() {return currentFloor;}
+		
+		public void setCurrentFloor(int currentFloor) {this.currentFloor = currentFloor;}
+		
 		@Override
-		public void setfloorExit(int exit) {
-			this.floorExit = exit;
-			
-		}
-		public int getfloorExit()
-		{
-			return floorExit;
-		}
+		public void setfloorExit(int exit) {this.floorExit = exit;}
+		
+		public int getfloorExit(){return floorExit;}
 
 	}
 

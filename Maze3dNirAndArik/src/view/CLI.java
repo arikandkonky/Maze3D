@@ -18,7 +18,7 @@ public class CLI implements Runnable {
 	PrintWriter out; 
 	HashMap<String,Command> stringtoCommand;
 	HashSet<String> commandsStrings; 
-	private Scanner scan;
+	private Scanner scanner;
 
 	public CLI(BufferedReader in, PrintWriter out,HashMap<String, Command> stringtoCommand2) { 
 		super(); 
@@ -30,7 +30,7 @@ public class CLI implements Runnable {
 
 
 	public void start(){
-		Scanner scanner = new Scanner(in);
+		scanner = new Scanner(in);
 		String inputString = "";
 		String[] inputStringAsArray = {};
 		

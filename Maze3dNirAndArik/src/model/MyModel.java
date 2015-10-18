@@ -119,7 +119,6 @@ public class MyModel extends Observable implements Model{
 				{
 					maze = new My3dGenerator();
 					errorNoticeToController("User: Generating maze with My3dGenerator with the given parameters");							
-						System.out.println("Generating");
 						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));	
 				}
 				else if(generator.equals("simplemaze3dgenerator"))
@@ -127,7 +126,6 @@ public class MyModel extends Observable implements Model{
 					System.out.println("Heyy i get in!");
 					maze = new SimpleMaze3dGenerator();
 					errorNoticeToController("User: Generating maze with SimpleMaze3dGenerator with the given parameters");
-						System.out.println("Generating");
 						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));
 						
 				}
@@ -135,15 +133,12 @@ public class MyModel extends Observable implements Model{
 				{
 					maze = new My3dGenerator();
 					errorNoticeToController("Defualt: Generating maze with My3dGenerator with the given parameters");
-						System.out.println("Generating");
 						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));
 				}
 				else if(p.getDefAlgorithm().equals("simplemaze3dgenerator"))
 				{
 					maze = new SimpleMaze3dGenerator();
-					errorNoticeToController("Default: Generating maze with SimpleMaze3dGenerator with the given parameters");
-			
-						System.out.println("Generating");
+					errorNoticeToController("Default: Generating maze with SimpleMaze3dGenerator with the given parameters");			
 						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));
 					
 				}
@@ -155,7 +150,6 @@ public class MyModel extends Observable implements Model{
 				public void run() {
 					try {
 					Maze3d maze = futuremaze.get();
-					//maze = futuremaze.get();
 					stringtoMaze3d.put(name, maze);
 					setChanged();
 					modelCompletedCommand=2;
@@ -257,7 +251,10 @@ public class MyModel extends Observable implements Model{
 	}
 	
 	public void saveMazeToFile(String name, String filename) throws IOException{
-		if(filename.isEmpty()||name.isEmpty()){errorNoticeToController("Cannot resolve filename\\maze name");}
+		if(filename.isEmpty()||name.isEmpty())
+		{
+			errorNoticeToController("File Name Empty / Maze Name Empty");
+		}
 		else
 		{
 			if(stringtoMaze3d.containsKey(name))
@@ -293,12 +290,12 @@ public class MyModel extends Observable implements Model{
 						this.setChanged();
 						this.notifyObservers();
 					}
-					else{errorNoticeToController("It seems that file exists/Cannot create file.");}
+					else{errorNoticeToController("Cannot Create The File");}
 				}
 			}
 			else
 			{
-				errorNoticeToController("The name is incorrect");
+				errorNoticeToController("The Maze Name Not Exists");
 				throw new NullPointerException("There is no maze " +name);
 			}
 		}
@@ -323,7 +320,6 @@ public class MyModel extends Observable implements Model{
             InputStream in=new MyDecompressorInputStream(new FileInputStream(filename));
 			in.read(b);
 			in.close();
-			System.out.println("everyting good until here");
 			Maze3d maze = new Maze3d(b);
 			stringtoMaze3d.put(name, maze);
 			String[] dataSet = new String[2];
@@ -335,7 +331,7 @@ public class MyModel extends Observable implements Model{
 			this.notifyObservers();
 		}
 		else{
-			errorNoticeToController("file not found, try another file");
+			errorNoticeToController("File Not Found,Try Another Name");
 			throw new FileNotFoundException("File Not Found");
 			}
 	}
@@ -354,7 +350,7 @@ public class MyModel extends Observable implements Model{
 			notifyObservers();
 		}
 		else
-			errorNoticeToController("there is no maze name: "+ name);
+			errorNoticeToController("Maze Not Exists with name: "+ name);
 	}
 	
 	public void fileSize(String filename)
@@ -386,12 +382,12 @@ public class MyModel extends Observable implements Model{
 			}
 			else
 			{
-				Callable<Solution<Position>> mazeSolver =new Callable<Solution<Position>>() {
+				Callable<Solution<Position>> mazeSolver =new Callable<Solution<Position>>() 
+				{
 					@SuppressWarnings({ "unchecked", "rawtypes" })
 					@Override
 					public Solution<Position> call() throws Exception 
 					{
-						System.out.println(algorithm);
 						Maze3d maze = stringtoMaze3d.get(name);
 						Searchable<Position> s = new Maze3dSearch(maze);
 						Maze3DSolution solution = new Maze3DSolution();
@@ -451,7 +447,7 @@ public class MyModel extends Observable implements Model{
 			}
 			else{errorNoticeToController("this maze didnt solve yet");}
 		}
-		else{errorNoticeToController("this maze didnt solve yet");}
+		else{errorNoticeToController("this maze not exists");}
 	}
 	
 	@Override
@@ -479,7 +475,6 @@ public class MyModel extends Observable implements Model{
 		
 	}
 	private void solveMazeByBfs(String name) {
-		//Solution<Position> solution = solutionMap.get(stringtoMaze3d.get(name));
 		this.modelCompletedCommand= 9;
 		setChanged();
 		setData(name);
@@ -487,7 +482,6 @@ public class MyModel extends Observable implements Model{
 	}
 	
 	private void solveMazeByAstar(String name) {
-		//Solution<Position> solution = solutionMap.get(stringtoMaze3d.get(name));
 		this.modelCompletedCommand= 9;
 		setChanged();
 		setData(name);
@@ -547,14 +541,12 @@ public class MyModel extends Observable implements Model{
 		int Y = new Integer(y);
 		int Z = new Integer(z);
 		final String mazenewStart = name+x+y+z;
-		//System.out.println("making solution from Position:"+);
 		Maze3dPosition mazeStartPosition = new Maze3dPosition(X, Y, Z);
 		final Maze3d maze = stringtoMaze3d.get(name);
 		maze.setStartPosition(mazeStartPosition);
 		stringtoMaze3d.put(mazenewStart, maze);
 			if(solutionMap.containsKey(maze))
 			{
-				System.out.println("alrdy solved this maze, wont do it again..");
 				this.modelCompletedCommand=9;
 				this.setData(mazenewStart);
 				setChanged();
@@ -568,7 +560,6 @@ public class MyModel extends Observable implements Model{
 					@Override
 					public Solution<Position> call() throws Exception 
 					{
-						//Maze3d maze = stringtoMaze3d.get((name+""+x+""+y+""+z));
 						Searchable<Position> s = new Maze3dSearch(maze);
 						Maze3DSolution solution = new Maze3DSolution();
 						if(p.getDefSolver().equals("bfs"))
@@ -597,7 +588,8 @@ public class MyModel extends Observable implements Model{
 						return solution;
 					}
 				});
-				try {
+				try
+				{
 					solutionMap.put(maze, f.get());
 					solveMazeByAstar(mazenewStart);
 				} catch (InterruptedException e) {
@@ -610,12 +602,9 @@ public class MyModel extends Observable implements Model{
 			}
 		}
 		
-	
-	
 	@Override
 	public void solveMazeUserOnepoint(final String name) {
 		{
-
 				if(solutionMap.containsKey(stringtoMaze3d.get(name)))
 				{
 					this.modelCompletedCommand = 10;
@@ -628,77 +617,9 @@ public class MyModel extends Observable implements Model{
 					notifyObservers();
 				}
 				else{errorNoticeToController("this maze didnt solve yet");}
-
 		}
-		/*
-		int X = new Integer(x);
-		int Y = new Integer(y);
-		int Z = new Integer(z);
-		Maze3d maze = stringtoMaze3d.get(name);
-		Maze3dPosition mazeStartPosition = new Maze3dPosition(X, Y, Z);
-		maze.setStartPosition(mazeStartPosition);
-		stringtoMaze3d.put((name+""+x+""+y+""+z), maze);
-		if(solutionMap.containsKey(stringtoMaze3d.get(name+""+x+""+y+""+z))){
-		Solution<Position> Solutionmap = solutionMap.get(stringtoMaze3d.get(name+""+x+""+y+""+z));
-		
-		for(State<Position> aa : Solutionmap.getSolution())
-		{
-			System.out.println(aa.getActionName().toString());
-		}
-		}
-		if(stringtoMaze3d.containsKey(name+""+x+""+y+""+z))
-		{
-			if(solutionMap.containsKey(stringtoMaze3d.get(name+""+x+""+y+""+z)))
-			{
-				System.out.println("alrdy solved this maze, wont do it again..");
-				this.modelCompletedCommand=12;
-				this.setData(name);
-				System.out.println(stringtoMaze3d.get(name+""+x+""+y+""+z).getGoalPosition().toString());
-				System.out.println("GOAL POSITION#$%#$%$#%$#%: "+ solutionMap.get(stringtoMaze3d.get(name+""+x+""+y+""+z)).toString());
-				setChanged();
-				notifyObservers();
-			}
-			else
-			{
-				Callable<Solution<Position>> mazeSolver =new Callable<Solution<Position>>() {
-					@SuppressWarnings({ "unchecked", "rawtypes" })
-					@Override
-					public Solution<Position> call() throws Exception 
-					{
-						Maze3d maze = stringtoMaze3d.get((name+""+x+""+y+""+z));
-						Searchable<Position> s = new Maze3dSearch(maze);
-						System.out.println("GOAL POSITION#$%#$%$#%$#%: "+ stringtoMaze3d.get(name+""+x+""+y+""+z).getGoalPosition().toString());
-						Maze3DSolution solution = new Maze3DSolution();
-						if(p.getDefSolver().equals("bfs"))
-						{
-							System.out.println("Solve with defualt bfs");
-							BfsCommonSearcher Bfs = new BfsCommonSearcher(solution);
-							Bfs.setSolution(solution);
-							
-							solutionMap.put(stringtoMaze3d.get(name), (Maze3DSolution)Bfs.Search(s));
-							OneStatesolveMazeByBfs(name);
-						}
-						else if(p.getDefSolver().equals("astar"))
-						{
-							System.out.println("solve with default astar, Manhetthen distance");
-							Manhattandistance h2 = new Manhattandistance();
-							AstarCommonSearcher Astar = new AstarCommonSearcher<>(h2, solution, s);
-							Astar.setSolution(solution);
-							System.err.println(solution.toString());
-							solutionMap.put(stringtoMaze3d.get(name), (Maze3DSolution)Astar.Search(s));
-							OneStatesolveMazeByAstar(name);
-						}
-							return null;
-					}
-				};c.submit(mazeSolver);
-			}
-		}
-		*/
-	}
-	
-
-		
-	}
+	}		
+}
 
 
 
