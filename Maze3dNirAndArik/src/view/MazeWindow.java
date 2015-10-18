@@ -75,6 +75,7 @@ public class MazeWindow extends BasicWindow {
 	    shell.setText("Maze 3D Game By Arik and Nir");
 	    shell.setSize(800,600);
 		shell.setLayout(new GridLayout(2,false));
+		//Hey
 		
 		
 		GridData stretchGridData = new GridData();
