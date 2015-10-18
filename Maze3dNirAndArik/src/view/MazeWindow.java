@@ -191,7 +191,6 @@ public class MazeWindow extends BasicWindow {
 				
 				@Override
 				public void widgetDefaultSelected(SelectionEvent arg0) {
-					// TODO Auto-generated method stub
 					
 				}
 			});
@@ -297,7 +296,6 @@ public class MazeWindow extends BasicWindow {
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -344,12 +342,11 @@ public class MazeWindow extends BasicWindow {
 						ErrorBox.setText("Won!!! :)");
 						ErrorBox.setMessage("Nice you solve the Maze With little Help :P");
 						ErrorBox.open();
-						//shell.layout();
+						shell.layout();
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
@@ -371,12 +368,10 @@ public class MazeWindow extends BasicWindow {
 		        userCommand = 12;
 		        String[] args = {selected};
 		        notifyObservers(args);
-				//Need to move it on..
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 		});
