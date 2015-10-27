@@ -13,7 +13,7 @@ import presenter.Presenter;
 import presenter.Properties;
 import view.MazeWindow;
 import view.MyView;
-
+//Run
 public class Run {
 	public static void main(String[] args) throws Exception {
 		XMLDecoder decoder=null;

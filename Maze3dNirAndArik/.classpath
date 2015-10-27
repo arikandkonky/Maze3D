@@ -3,8 +3,8 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/Users/nir/Desktop/swt.jar" sourcepath="/org.eclipse.swt"/>
 	<classpathentry kind="src" path="/NirAndArikProject"/>
-	<classpathentry kind="lib" path="C:/Users/nir/Desktop/Task2Project.jar"/>
+	<classpathentry kind="lib" path="G:/Projects/Java/FinalJavaMaze3DProject/Nir And Arik project/NirAndArikProject/swt.jar"/>
+	<classpathentry kind="lib" path="G:/Projects/Java/FinalJavaMaze3DProject/Nir And Arik project/NirAndArikProject/Task2Project.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
