@@ -48,7 +48,10 @@ public interface View {
 	void printXMLfieds(String string, String string2, int i, String string3);
 
 
-	void oneStateDisplay(String string, Solution<Position> solution); 
+	void oneStateDisplay(String string, Solution<Position> solution);
+
+
+	void serverStarted(String data); 
 
 
 

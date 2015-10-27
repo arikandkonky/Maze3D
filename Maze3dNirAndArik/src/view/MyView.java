@@ -5,8 +5,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Observable;
-//***
-import Controller.Controller;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
@@ -14,17 +12,12 @@ import algorithms.search.State;
 import presenter.Command;
 
 public class MyView extends Observable implements View {
-	Controller controller;
 	CLI cli;
 	HashMap<String, Command> StringtoCommand;
 	BufferedReader in;
 	PrintWriter out;
 	int userCommand =0;
 	
-	public MyView()
-	{
-		super();
-	}
 	
 	public MyView(BufferedReader in, PrintWriter out)
 	{
@@ -33,18 +26,16 @@ public class MyView extends Observable implements View {
 		this.out = out;
 	}
 	
-	public MyView(Controller controller)
+	public MyView()
 	{
 		super();
-		this.controller = controller;
 		this.in = new BufferedReader(new InputStreamReader(System.in));
 		this.out = new PrintWriter(System.out);
 	}
 	
-	public MyView(Controller controller, BufferedReader in, PrintWriter out,HashMap<String,Command> stringtoCommand)
+	public MyView( BufferedReader in, PrintWriter out,HashMap<String,Command> stringtoCommand)
 	{
 		super();
-		this.controller = controller;
 		cli = new CLI(in,out,StringtoCommand);
 	}
 	public void start() {cli.start();}
@@ -146,14 +137,6 @@ public class MyView extends Observable implements View {
 	
 	
 	
-	
-	public Controller getController() {
-		return controller;
-	}
-
-	public void setController(Controller controller) {
-		this.controller = controller;
-	}
 
 	public BufferedReader getIn() {
 		return in;
@@ -191,6 +174,12 @@ public class MyView extends Observable implements View {
 	@Override
 	public void oneStateDisplay(String string, Solution<Position> solution) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void serverStarted(String data) {
+		out.print("Server is Up!");
 		
 	}
 	

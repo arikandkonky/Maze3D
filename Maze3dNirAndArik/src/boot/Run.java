@@ -15,13 +15,12 @@ import view.MazeWindow;
 import view.MyView;
 
 public class Run {
-	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception {
 		XMLDecoder decoder=null;
 		decoder=new XMLDecoder(new BufferedInputStream(new FileInputStream("properties.xml")));
 		Properties properties=(Properties)decoder.readObject();
 		
-		System.out.println(properties);
+		//System.out.println(properties);
 		if(properties.getUI().equals("CLI"))
 		{
 			try {

@@ -8,14 +8,13 @@ public abstract class AbsCommand implements Command {
  	 
  	 
 protected Model model; 
-Controller controller; 
+ 
  	 
  	 
  	 
-public AbsCommand(Model model, Controller controller) { 
+public AbsCommand(Model model) { 
 	super(); 
  	this.model = model; 
-    this.controller = controller; 
 	} 
  
  

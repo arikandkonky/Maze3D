@@ -7,11 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.concurrent.Callable;
@@ -23,11 +20,8 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import algorithms.mazeGenerators.Maze3d;
-import algorithms.mazeGenerators.Maze3dGenerator;
 import algorithms.mazeGenerators.Maze3dPosition;
-import algorithms.mazeGenerators.My3dGenerator;
 import algorithms.mazeGenerators.Position;
-import algorithms.mazeGenerators.SimpleMaze3dGenerator;
 import algorithms.search.AstarCommonSearcher;
 import algorithms.search.BfsCommonSearcher;
 import algorithms.search.Manhattandistance;
@@ -35,8 +29,6 @@ import algorithms.search.Maze3DSolution;
 import algorithms.search.Maze3dSearch;
 import algorithms.search.Searchable;
 import algorithms.search.Solution;
-import io.MyCompressorOutputStream;
-import io.MyDecompressorInputStream;
 import presenter.Properties;
 
 public class MyModel extends Observable implements Model{
@@ -47,6 +39,7 @@ public class MyModel extends Observable implements Model{
 	ExecutorService c ;
 	HashMap<String, Maze3d> stringtoMaze3d = new HashMap<String, Maze3d>();
 	HashMap<Maze3d, Solution<Position>> solutionMap = new HashMap<Maze3d, Solution<Position>>();
+	MyTCPIPServer server;
 	
 	public MyModel(){
 		this.c = Executors.newFixedThreadPool(30);
@@ -77,293 +70,16 @@ public class MyModel extends Observable implements Model{
 	}
 	
 	
-	
-	
-	public void dir(String dir) throws NullPointerException
-	{
-		if(dir!=null)
-		{
-			File file = new File(dir);
-			if(file.exists())
-			{
-				String stringofdir = " ";
-				for(String fileorDir : file.list())
-				{
-					stringofdir += fileorDir+ " ; ";
-				}
-				this.data = stringofdir;
-				this.modelCompletedCommand=1;
-				this.setChanged();
-				notifyObservers();
-			}
-			else
-				errorNoticeToController("Illegal Path");
-			
-		}
-		else
-			errorNoticeToController("Illegal Path");
-	}
-
-	public synchronized void generatemazewithname(final String name, final String generator , final String floor, final String line, final String col)
-	{
-		if(floor.isEmpty()||line.isEmpty()||col.isEmpty()){errorNoticeToController("Wrong parameters use :generate 3d maze <name> <my3dgenerator/simple3dgenerator> <floor> <line> <col>" );}
-		final Future<Maze3d> futuremaze  = c.submit(new Callable<Maze3d>() {
-			@Override
-			public Maze3d call() throws Exception 
-			{
-				Maze3dGenerator maze;
-				if(generator.equals("my3dgenerator"))
-				{
-					maze = new My3dGenerator();
-					errorNoticeToController("User: Generating maze with My3dGenerator with the given parameters");							
-						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));	
-				}
-				else if(generator.equals("simplemaze3dgenerator"))
-				{
-					System.out.println("Heyy i get in!");
-					maze = new SimpleMaze3dGenerator();
-					errorNoticeToController("User: Generating maze with SimpleMaze3dGenerator with the given parameters");
-						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));
-						
-				}
-				else if(p.getDefAlgorithm().equals("My3dGenerator"))
-				{
-					maze = new My3dGenerator();
-					errorNoticeToController("Defualt: Generating maze with My3dGenerator with the given parameters");
-						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));
-				}
-				else if(p.getDefAlgorithm().equals("simplemaze3dgenerator"))
-				{
-					maze = new SimpleMaze3dGenerator();
-					errorNoticeToController("Default: Generating maze with SimpleMaze3dGenerator with the given parameters");			
-						return maze.generate(new Integer(floor),new Integer(line),new Integer(col));
-					
-				}
-			return null;
-			}
-		});
-
-			Thread t = new Thread(new Runnable() {
-				public void run() {
-					try {
-					Maze3d maze = futuremaze.get();
-					stringtoMaze3d.put(name, maze);
-					setChanged();
-					modelCompletedCommand=2;
-					setData(name);
-					notifyObservers();
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ExecutionException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
+	@Override
+	public void startServer(String numOfPlayers) {
+		Integer numOfPlayersInt = new Integer(numOfPlayers);
+		MyTCPIPServer server = new MyTCPIPServer(12345);
+		server.startServer(numOfPlayersInt);
+		this.modelCompletedCommand=1;
+		this.setData(numOfPlayers);
+		setChanged();
+		notifyObservers();
 		
-			t.start();
-	
-
-	}
-
-	public synchronized void getMazeBygivenName(String name)
-	{
-		if(stringtoMaze3d.containsKey(name))
-		{
-			this.modelCompletedCommand=3;
-			Object[] dataSet = new Object[2];
-			dataSet[0] = stringtoMaze3d.get(name);
-			dataSet[1] = name;
-			data = dataSet;
-			setChanged();
-			notifyObservers();
-		}
-	}
-	
-	public synchronized void getcrossby(String xyz, String index,String For,String name) {
-		int[][] returnto = null;
-		if(stringtoMaze3d.containsKey(name))
-		{
-			Maze3d a = stringtoMaze3d.get(name);
-			//Floors
-			if(xyz.equals("x"))
-			{
-				if(new Integer(index)>0 && new Integer(index)< a.getFloor()){
-				returnto = a.getCrossSectionByX(new Integer(index));
-				}
-				else
-				{
-					errorNoticeToController("bad Section by :"+ xyz + "try between 0-" + a.getFloor());
-				}
-			}
-			//Lines
-			else if(xyz.equals("y"))
-			{
-				if(new Integer(index)>0 && new Integer(index)< a.getLine())
-				{
-					returnto = a.getCrossSectionByY(new Integer(index));
-				}
-				else
-				{
-					errorNoticeToController("bad Section by :"+ xyz + "try between 0-" + a.getLine());
-				}
-			}
-			//Cols
-			else if(xyz.equals("z"))
-			{
-				if(new Integer(index)>0 && new Integer(index)< a.getCol())
-				{
-					returnto = a.getCrossSectionByZ(new Integer(index));
-				}
-				else
-				{
-					errorNoticeToController("bad Section by :"+ xyz  + "try between 0-" + a.getCol());
-				}
-			}
-			else 
-			{
-				errorNoticeToController("bad xyz, try: x,y,z...");
-			}
-			
-		}
-		else if(!stringtoMaze3d.containsKey(name))
-		{
-			errorNoticeToController("there is no maze in this name: " +name );
-		}
-		if(returnto!=null)
-		{
-			Object[] dataSet = new Object[4];
-			dataSet[0] = (int[][])returnto;
-			dataSet[1] = (String)xyz;
-			dataSet[2] = (String)index;
-			dataSet[3] = (String)name;
-			this.data = dataSet;
-			this.setData(dataSet);
-			this.modelCompletedCommand = 4;
-			setChanged();
-			notifyObservers();
-		}
-		else{errorNoticeToController("Problems with the Args");}
-	}
-	
-	public void saveMazeToFile(String name, String filename) throws IOException{
-		if(filename.isEmpty()||name.isEmpty())
-		{
-			errorNoticeToController("File Name Empty / Maze Name Empty");
-		}
-		else
-		{
-			if(stringtoMaze3d.containsKey(name))
-			{
-				File fileCreator = new File(filename);
-				if(fileCreator.exists())
-				{
-					OutputStream out=new MyCompressorOutputStream(new FileOutputStream(filename));
-					out.write(stringtoMaze3d.get(name).toByteArray());
-					out.flush();
-					out.close();
-					String[] datatToSet = new String[2];
-					datatToSet[0] = name;
-					datatToSet[1] = filename;
-					data = datatToSet;
-					this.modelCompletedCommand=5;
-					this.setChanged();
-					this.notifyObservers();
-				}
-				else if(!fileCreator.exists())
-				{
-					if(fileCreator.createNewFile())
-					{
-						OutputStream out=new MyCompressorOutputStream(new FileOutputStream(filename));
-						out.write(stringtoMaze3d.get(name).toByteArray());
-						out.flush();
-						out.close();
-						String[] datatToSet = new String[2];
-						datatToSet[0] = name;
-						datatToSet[1] = filename;
-						data = datatToSet;
-						this.modelCompletedCommand=5;
-						this.setChanged();
-						this.notifyObservers();
-					}
-					else{errorNoticeToController("Cannot Create The File");}
-				}
-			}
-			else
-			{
-				errorNoticeToController("The Maze Name Not Exists");
-				throw new NullPointerException("There is no maze " +name);
-			}
-		}
-	}
-	public void loadMazeToFile(String filename, String name) throws IOException{
-		File f = new File(filename);
-		if (f.exists()){
-			@SuppressWarnings("resource")
-			FileInputStream fileIn = new FileInputStream(filename);
-			byte[] buffer = new byte[12];
-			fileIn.read(buffer, 0, 12);
-			byte[] buffer4 = new byte[4];
-			for(int i=0;i<4;i++){buffer4[i]=buffer[i];}
-				int floor = ByteBuffer.wrap(buffer4).getInt();
-		
-			for(int i=0;i<4;i++){buffer4[i]=buffer[i+4];}
-				int line = ByteBuffer.wrap(buffer4).getInt();
-		
-			for(int i=0;i<4;i++){buffer4[i]=buffer[i+8];}
-				int col = ByteBuffer.wrap(buffer4).getInt();
-			System.out.println("floor: " + floor + " line: " + line + " col: " + col);
-			byte b[]=new byte[(floor*line*col) + 36];
-            InputStream in=new MyDecompressorInputStream(new FileInputStream(filename));
-			in.read(b);
-			in.close();
-			Maze3d maze = new Maze3d(b);
-			stringtoMaze3d.put(name, maze);
-			String[] dataSet = new String[2];
-			dataSet[0] = filename;
-			dataSet[1] = name;
-			data = dataSet;
-			this.modelCompletedCommand = 6;
-			this.setChanged();
-			this.notifyObservers();
-		}
-		else{
-			errorNoticeToController("File Not Found,Try Another Name");
-			throw new FileNotFoundException("File Not Found");
-			}
-	}
-	
-	
-	public void MazeSize(String name)
-	{
-		if(stringtoMaze3d.containsKey(name))
-		{
-			Object[] dataSet = new Object[2];
-			dataSet[0] = name;
-			dataSet[1] = new Double(stringtoMaze3d.get(name).toByteArray().length);
-			this.modelCompletedCommand=7;
-			this.setChanged();
-			this.setData(dataSet);
-			notifyObservers();
-		}
-		else
-			errorNoticeToController("Maze Not Exists with name: "+ name);
-	}
-	
-	public void fileSize(String filename)
-	{
-		File file = new File(filename);
-		if(file.exists())
-		{
-			Object[] dataSet = new Object[2];
-			dataSet[0] = filename;
-			dataSet[1] = new Double(file.length());
-			this.modelCompletedCommand=8;
-			this.setData(dataSet);
-			this.setChanged();
-			notifyObservers();
-		}
 	}
 	
 	public void solveMaze(final String name, final String algorithm)
@@ -429,7 +145,7 @@ public class MyModel extends Observable implements Model{
 		}
 	}
 	
-	public void getSolution(String name)
+	/*public void getSolution(String name)
 	{
 		if(stringtoMaze3d.containsKey(name))
 		{
@@ -446,7 +162,7 @@ public class MyModel extends Observable implements Model{
 			else{errorNoticeToController("this maze didnt solve yet");}
 		}
 		else{errorNoticeToController("this maze not exists");}
-	}
+	}*/
 	
 	@Override
 	public void changeXmlFile(String filename) throws FileNotFoundException {
@@ -622,6 +338,8 @@ public class MyModel extends Observable implements Model{
 	public void setModelCompletedCommand(int modelCompletedCommand) {
 		this.modelCompletedCommand = modelCompletedCommand;
 	}
+
+
 }
 
 
