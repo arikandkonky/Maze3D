@@ -7,10 +7,27 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+
+
+/**
+ * @author Nir Konky and arik bidny
+ * @version 1.0
+ * <h1> BasicWondow </h1>
+ * This abstract Class BasicWindow implements view,Runnable and extends Observable.
+ * all implements classes will have to implement 
+ * all extends classes will have to do the methods
+ */
 public abstract class BasicWindow extends Observable implements Runnable,View{	
 	Display display;
 	Shell shell;
 	
+
+	/**
+	 * do basicWindow instance with the given parameters
+	 * @param title String
+	 * @param width int 
+	 * @param height int
+	 */
  	public BasicWindow(String title, int width,int height) {
  		display=new Display();
  		shell  = new Shell(display);
@@ -18,8 +35,15 @@ public abstract class BasicWindow extends Observable implements Runnable,View{
  		shell.setText(title);
 	}
  	
+ 	/**
+ 	 * init all the widgets
+ 	 */
  	abstract void initWidgets();
 
+
+ 	/**
+ 	 *  run the basic window 
+ 	 */
 	@Override
 	public void run() {
 		initWidgets();
@@ -44,3 +68,4 @@ public abstract class BasicWindow extends Observable implements Runnable,View{
 	}
 	
 }
+

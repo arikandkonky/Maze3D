@@ -2,20 +2,29 @@ package presenter;
 
 
 import java.util.HashMap;
+import java.util.Observable;
 import java.util.Observer;
 
-import algorithms.mazeGenerators.Position;
-import algorithms.search.Solution;
-
-import java.util.Observable;
 import model.Model;
 import view.View;
 
+/**
+ * @author Nir Konky And Arik Bidny
+ * @version 1.0
+ * <h1>Presenter</h1>
+ * This class Presenter implements Observer and represent an Presenter in MVP design
+ * Must Implements all the Observer Function
+ */
 public class Presenter implements Observer {
 	View view;
 	Model model;
 	public HashMap<String,Command> stringtoCommand;
 	
+	/**
+	 * Constructor, do Super() and initialize the parameters
+	 * @param view View object
+	 * @param model model object
+	 */
 	public Presenter(final View view, final Model model){
 		super();
 		this.view=view;
@@ -87,51 +96,60 @@ public class Presenter implements Observer {
 	
 	
 	
-	
+	/**
+	 * get view object
+	 * @return view object
+	 */
 	public View getView() {
 		return view;
 	}
 
-
-
-
+	/**
+	 * sets view object
+	 * @param view View object
+	 */
 	public void setView(View view) {
 		this.view = view;
 	}
 
-
-
-
+	/**
+	 * get model object
+	 * @return model object
+	 */
 	public Model getModel() {
 		return model;
 	}
 
-
-
-
+	/**
+	 * sets model object
+	 * @param model object
+	 */
 	public void setModel(Model model) {
 		this.model = model;
 	}
 
-
-
-
+	/**
+	 * get hash map String to Command
+	 * @return stringtocommand hashmap
+	 */
 	public HashMap<String, Command> getStringtoCommand() {
 		return stringtoCommand;
 	}
-
-
-
-
+	
+	/**
+	 * set hash map string to command 
+	 * @param stringtoCommand hashmap
+	 */
 	public void setStringtoCommand(HashMap<String, Command> stringtoCommand) {
 		this.stringtoCommand = stringtoCommand;
 	}
 
-
-
-
-	@SuppressWarnings("unchecked")
 	@Override
+	/**
+	 * update function, MVP design.
+	 * @param Observable o
+	 * @param Object arguments
+	 */
 	public void update(Observable o, Object arg) {
 		if(o==view)
 		{

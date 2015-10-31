@@ -22,6 +22,13 @@ import algorithms.search.Solution;
 import presenter.Properties;
 import presenter.ServerProperties;
 
+/**
+ * @author Nir Konky And Arik Bidny
+ * @version 1.0
+ * <h1>ClientHandel</h1>
+ * Hes goal is to Handle all the online clients.
+ * implements Runnable
+ */
 public class ClientHandel implements Runnable{
 
 	private MyModel model;
@@ -29,6 +36,13 @@ public class ClientHandel implements Runnable{
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	@SuppressWarnings("resource")
+	/**
+	 * constructor ,get socket, input stream and outputstream
+	 * @param someClient
+	 * @param input
+	 * @param output
+	 * @throws Exception
+	 */
 	public ClientHandel(Socket someClient,ObjectInputStream input, ObjectOutputStream output)  throws Exception {
 		this.someClient = someClient;		
 		this.input = input;
@@ -45,6 +59,10 @@ public class ClientHandel implements Runnable{
 	}
 
 	@Override
+	/**
+	 * he's goal is to get the parameters from the client and give them to the model, after that get back the solution 
+	 * and give it back to client.
+	 */
 	public void run() {
 		try {
 			Maze3d ian = readMazeFromClient();
@@ -88,7 +106,12 @@ public class ClientHandel implements Runnable{
 		String solver = (String)input.readObject();
 		return solver;
 	}
-	
+	/**
+	 * This method reads maze fromt he client.
+	 * @return
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private Maze3d readMazeFromClient() throws IOException, ClassNotFoundException {
 		System.out.println("im in readmazefromClient func");
 		Maze3d maze =  (Maze3d) input.readObject();

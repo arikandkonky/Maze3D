@@ -1,9 +1,5 @@
 package model;
 
-import java.beans.XMLDecoder;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,24 +10,36 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+/**
+ * @author Nir Konky And Arik Bidny
+ * @version 1.0
+ * <h1>MyTCPIPServer</h1>
+ * open socket and wait for connections.
+ */
 public class MyTCPIPServer {
 
 	private static final String GET_SOLVE = "get solve";
 	private int port;
 	private Executor executer;
-	@SuppressWarnings("unused")
 	private ServerSocket server;
 	private boolean killServer = true;
 	Socket someClient;
 	int numOfClients=0;
 
+	/**
+	 * constructor get the port to listen on
+	 * @param port int
+	 */
 	public MyTCPIPServer(int port) {
 		this.port = port;
 	
 	}
-
-	@SuppressWarnings("resource")
-	public void startServer(int numOfClients){
+	/**
+	 * start up the server and wait for connections
+	 * @param numOfClients int
+	 */
+	void startServer(int numOfClients){
 		executer = Executors.newFixedThreadPool(numOfClients);
 		try 
 		{
@@ -76,6 +84,10 @@ public class MyTCPIPServer {
 			((ExecutorService)executer).shutdown();
 		}		
 	}
+	
+	/**
+	 * stop the server.
+	 */
 	public void stopServer(){
 		killServer = false;
 		System.out.println("in the StopServer");
@@ -87,10 +99,18 @@ public class MyTCPIPServer {
 		}
 	}
 	
+	/**
+	 * get the number of the clients online now.
+	 * @return numOfClients int
+	 */
 	public int getNumOfClients() {
 		return numOfClients;
 	}
 
+	/**
+	 * set the number of clients online.
+	 * @param numOfClients int
+	 */
 	public void setNumOfClients(int numOfClients) {
 		this.numOfClients = numOfClients;
 	}

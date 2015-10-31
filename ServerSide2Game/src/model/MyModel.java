@@ -35,6 +35,14 @@ import algorithms.search.State;
 import presenter.Properties;
 import presenter.ServerProperties;
 
+
+/**
+ * @author Nir Konky And Arik Bidny
+ * @version 1.0
+ * <h1>MyModel</h1>
+ * This class MyModel implements Model and represent an Model in MVP design
+ * Must Implements all the Model Func
+ */
 public class MyModel extends Observable implements Model{
 
 	Object data;
@@ -49,10 +57,19 @@ public class MyModel extends Observable implements Model{
 	ServerProperties sp;
 	boolean flag = false;
 	
+	/**
+	 * Constructor, initilize the Thread Pull to 30 
+	 */	
 	public MyModel(){
 		this.c = Executors.newFixedThreadPool(30);
 	}
 	@SuppressWarnings("unchecked")
+	/**
+	 * Constructor, do Super(), trying to read the Solutions from the solution file.
+	 * @param p properties
+	 * @param cp ClientProperties
+	 * @throws Exception exception
+	 */
 	public MyModel(Properties p,ServerProperties sp) throws Exception
 	{
 		super();
@@ -78,6 +95,13 @@ public class MyModel extends Observable implements Model{
 	
 	
 	@SuppressWarnings("unchecked")
+	/**
+	 * Create object MyModel that get Socket,Properties, And Server Properties
+	 * @param someClient Client instance Socket
+	 * @param p Properties 
+	 * @param sp Server Properties
+	 * @throws Exception Exception
+	 */
 	public MyModel(Socket someClient, Properties p,ServerProperties sp) throws Exception
 	{
 		super();
@@ -105,6 +129,12 @@ public class MyModel extends Observable implements Model{
 	
 	
 	@SuppressWarnings("unchecked")
+	/**
+	 * create object that get Socket and Properties
+	 * @param someClient Socket Instance
+	 * @param p properties 
+	 * @throws Exception exception
+	 */
 	public MyModel(Socket someClient, Properties p) throws Exception
 	{
 		super();
@@ -129,6 +159,11 @@ public class MyModel extends Observable implements Model{
 	}
 	
 	@SuppressWarnings("unchecked")
+	/**
+	 * Constructor, get Properties
+	 * @param p properties
+	 * @throws Exception exception
+	 */
 	public MyModel(Properties p) throws Exception
 	{
 		super();
@@ -151,8 +186,12 @@ public class MyModel extends Observable implements Model{
 		}
 	}
 	
-	
 	@Override
+	/**
+	 * Start the server.
+	 * @param Port int port
+	 * @param NumOfClients int number of clients
+	 */
 	public void startServer(String port, String numOfClients)  
 	{
 		Thread t = new Thread(new Runnable() {
@@ -172,7 +211,10 @@ public class MyModel extends Observable implements Model{
 		c.execute(t);
 		
 	}
-	
+	/**
+	 * error notice to Presenter.
+	 * @param s String error
+	 */
 	public void errorNoticeToController(String s)
 	{
 		modelCompletedCommand=-1;
@@ -181,6 +223,9 @@ public class MyModel extends Observable implements Model{
 		notifyObservers();
 	}
 	
+	/**
+	 * notify the number of clients to the observer.
+	 */
 	public void NumOfClients(){
 		data = server.getNumOfClients();
 		modelCompletedCommand=2;
@@ -188,7 +233,9 @@ public class MyModel extends Observable implements Model{
 		notifyObservers();
 		
 	}
-	
+	/**
+	 * exiting the progrem, close all threads.
+	 */
 	public void exit()
 	{
 
@@ -208,7 +255,12 @@ public class MyModel extends Observable implements Model{
 		
 	}
 
-	
+	/**
+	 * open new Properties File.
+	 * @param filename string filename
+	 * @return properties Properties
+	 * @throws Exception exception
+	 */
 	public static Properties read(String filename) throws Exception {
         XMLDecoder decoder =new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
         Properties properties = (Properties)decoder.readObject();
@@ -216,7 +268,18 @@ public class MyModel extends Observable implements Model{
         return properties;
     }
 
+	
 	@Override
+	/**
+	 * return the solution of the maze
+	 * @param maze maze3d instance
+	 * @param defSolver string solver
+	 * @return Solution<Position> arraylist of the solution
+	 * @throws IOException exception
+	 * @throws ClassNotFoundException exception
+	 * @throws InterruptedException exception
+	 * @throws ExecutionException exception
+	 */
 	public Solution<Position> solveMazeUser(Maze3d maze, String defSolver) throws IOException, ClassNotFoundException, InterruptedException, ExecutionException {
 
 		if(solutionMap.containsKey(maze))
@@ -277,18 +340,34 @@ public class MyModel extends Observable implements Model{
 	
 	//*************************Getters and Setters Methonds***********************************//
 	
+	/**
+	 *get data
+	 *@return data data MVP func.
+	 */
 	public Object getData() {
 		return data;
 	}
 
+	/**
+	 * set data
+	 * @param data data MVP func
+	 */
 	public void setData(Object data) {
 		this.data = data;
 	}
 
+	/**
+	 * for MVP. model completed command
+	 * @return modelCompletedCommand int
+	 */
 	public int getModelCompletedCommand() {
 		return modelCompletedCommand;
 	}
 
+	/**
+	 * for MVP. model completed command
+	 * @param modelCompletedCommand int
+	 */
 	public void setModelCompletedCommand(int modelCompletedCommand) {
 		this.modelCompletedCommand = modelCompletedCommand;
 	}

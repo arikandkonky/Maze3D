@@ -3,15 +3,9 @@ package view;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.FontData;
@@ -19,23 +13,23 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
-import algorithms.mazeGenerators.Maze3d;
-import algorithms.mazeGenerators.Position;
-import algorithms.search.Solution;
-import algorithms.search.State;
+
 import presenter.Command;
 
+/**
+ * @author Nir Konky and arik bidny
+ * @version 1.0
+ * <h1> MazeWindow </h1>
+ * This Class MazeWindow extends Observable.
+ * all extends classes will have to do the methods
+ */
 public class MazeWindow extends BasicWindow {
 
 	public HashMap<String, Command> viewCommandMap;
@@ -43,16 +37,26 @@ public class MazeWindow extends BasicWindow {
 	PrintWriter out=new PrintWriter(System.out);
 	int userCommand=0;
 	
+	/**
+	 * with the given parameters do the maze window instance
+	 * @param title String
+	 * @param width int
+	 * @param height int
+	 * @param viewCommandMap hashmap
+	 */
 	public MazeWindow(String title, int width, int height,HashMap<String, Command> viewCommandMap) {
 		super(title, width, height);
 		this.viewCommandMap=viewCommandMap;
 	}
 
 
-
+	/**
+	 * init all the widgets of the server window
+	 */
 	@Override
 	void initWidgets() {
 		FontData defaultFont = new FontData("Script MT Bold",13,SWT.BOLD);
+		@SuppressWarnings("unused")
 		org.eclipse.swt.graphics.Font boldFont = new org.eclipse.swt.graphics.Font(display, defaultFont);
 	    shell.setText("Server Side Maze");
 	    shell.setSize(300,300);
@@ -191,7 +195,10 @@ public class MazeWindow extends BasicWindow {
 	
 	//**********************************Getters And Setters + View Methods*********************//
 	
-	
+	/**
+	 * set user command
+	 * @param i int
+	 */
 	@Override
 	public void setUserCommand(int i) {
 		this.userCommand = i;
@@ -199,30 +206,49 @@ public class MazeWindow extends BasicWindow {
 		}
 	
 
+	/**
+	 * get user command
+	 * @return userCommand int
+	 */
 	@Override
 	public int getUserCommand() {
 		return this.userCommand;
 	}
 	
+	/**
+	 * get hash map string> command
+	 * @return viewCommandMap hashmap
+	 */
 	public HashMap<String, Command> getViewCommandMap() {
 		return viewCommandMap;
 	}
 
+	/**
+	 * set hash map string to command
+	 * @param viewCommandMap hashmap
+	 */
 	public void setViewCommandMap(HashMap<String, Command> viewCommandMap) {
 		this.viewCommandMap = viewCommandMap;
 	}
 	
 
 	
-
-
 	@Override
+	/**
+	 * error notice to user 
+	 * @param String string
+	 */
 	public void errorNoticeToUser(String string) {
 		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
+	/**
+	 * start the server in the GUI
+	 * @param String port
+	 * @param String NumOfClients
+	 */
 	public void serverStarted(String port,String NumOfClients) {
 		MessageBox box = new MessageBox(shell);
 		box.setMessage("Server is Up!");
@@ -230,19 +256,20 @@ public class MazeWindow extends BasicWindow {
 		box.open();
 	}
 
-
+	/**
+	 * STOP THE Server
+	 */
 	@Override
 	public void serverStop() 
 	{
-		//MessageBox box = new MessageBox(shell);
-		//box.setMessage("Stoped the Server");
-		//box.open();
 		
 	}
 
-
-
 	@Override
+	/**
+	 * print the num of clients to out.
+	 * @param client int
+	 */
 	public void NumOfClients(int clients) {
 		MessageBox box = new MessageBox(shell);
 		box.setText("Number Of Clients Online!");

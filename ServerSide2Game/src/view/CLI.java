@@ -12,6 +12,13 @@ import java.util.Scanner;
 
 import presenter.Command;
 
+
+/**
+ * @author Nir Konky and arik bidny
+ * @version 1.0
+ * <h1>CLI</h1>
+ * This class defining the start of the project, implements Runnable.
+ */
 public class CLI implements Runnable {
 
 	BufferedReader in; 
@@ -20,6 +27,13 @@ public class CLI implements Runnable {
 	HashSet<String> commandsStrings; 
 	private Scanner scanner;
 
+
+	/**
+	 *@param BufferedReader in 
+	 *@param PrintWriter out 
+	 *@param hashMap<String,Command> Stringtocommands 
+	 *@return CLI cli
+    */
 	public CLI(BufferedReader in, PrintWriter out,HashMap<String, Command> stringtoCommand2) { 
 		super(); 
 		this.in = in; 
@@ -28,7 +42,9 @@ public class CLI implements Runnable {
 		commandsStrings = new HashSet<>(stringtoCommand2.keySet()); 
 		} 
 
-
+	/**
+	 * The goal is to start the project with the CLI parameters
+	 */
 	public void start(){
 		System.out.println("Enter Command");
 		scanner = new Scanner(in);
@@ -105,6 +121,10 @@ public class CLI implements Runnable {
 		try {in.close();} catch (IOException e) {e.printStackTrace();}out.close();
 		
 	}
+	
+	/**
+	 * print to out that the CLI class Running and start the start func
+	 */
 	@Override
 	public void run() {
 		out.println("Running Run method of CLI class");
@@ -112,26 +132,50 @@ public class CLI implements Runnable {
 		start();
 
 	}
+	/**
+	 * get in object
+	 * @return in object
+	 */
 	public BufferedReader getIn() {
 		return in;
 	}
-
+	
+	/**
+	 * set in object
+	 * @param in object
+	 */
 	public void setIn(BufferedReader in) {
 		this.in = in;
 	}
 
+	/**
+	 * get out object
+	 * @return out object
+	 */
 	public PrintWriter getOut() {
 		return out;
 	}
 
+	/**
+	 * set out object
+	 * @param out PrintWriter
+	 */
 	public void setOut(PrintWriter out) {
 		this.out = out;
 	}
 
+	/**
+	 * get hash map string to command
+	 * @return stringtoCommand hashmap
+	 */
 	public HashMap<String, Command> getStringtoCommand() {
 		return stringtoCommand;
 	}
 
+	/**
+	 * set hash map string to command
+	 * @param stringtoCommand hashmap
+	 */
 	public void setStringtoCommand(HashMap<String, Command> stringtoCommand) {
 		this.stringtoCommand = stringtoCommand;
 		commandsStrings = new HashSet<>(stringtoCommand.keySet()); 
