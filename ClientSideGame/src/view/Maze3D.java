@@ -49,8 +49,8 @@ public class Maze3D extends MazeDisplayer {
 		}
 		/**
 		 * Constructor , do instance  with the given parameters
-		 * @param parent
-		 * @param style
+		 * @param parent Composite 
+		 * @param style int
 		 */
 		public Maze3D(Composite parent, int style) {
 			super(parent, style);
@@ -207,8 +207,8 @@ public class Maze3D extends MazeDisplayer {
 		
 		/**
 		 * set char poisition with the given parameters
-		 * @param row
-		 * @param col
+		 * @param row int
+		 * @param col int
 		 */
 		@Override
 		public void setCharacterPosition(int row, int col) {
@@ -226,14 +226,14 @@ public class Maze3D extends MazeDisplayer {
 		
 		/**
 		 * set the char position x
-		 * @param characterX
+		 * @param characterX int
 		 * 
 		 */
 		public void setCharacterX(int characterX) {this.characterX = characterX;}
 		
 		/**
 		 * get the char y
-		 * @return charY
+		 * @return charY int
 		 */
 		public int getCharacterY() {return this.characterY;}
 		
@@ -245,7 +245,7 @@ public class Maze3D extends MazeDisplayer {
 		
 		/**
 		 * get the Exit x
-		 * @return 
+		 * @return exitX int
 		 */
 		public int getExitX() {return exitX;}
 		
@@ -269,13 +269,13 @@ public class Maze3D extends MazeDisplayer {
 		
 		/**
 		 * get the current floor
-		 * @return
+		 * @return currentFloor int
 		 */
 		public int getCurrentFloor() {return currentFloor;}
 		
 		/**
 		 * sets the current floor
-		 * @param currentFloor
+		 * @param currentFloor int
 		 */
 		public void setCurrentFloor(int currentFloor) {this.currentFloor = currentFloor;}
 		

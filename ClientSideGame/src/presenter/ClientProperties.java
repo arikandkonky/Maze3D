@@ -6,7 +6,6 @@ import java.io.Serializable;
 /**
  * 
  * @author Nir Konky and Arik Bidny
- * <h1>ClientProperties<h1>
  * ClientProperties implements Serializable and must use hes all Function
  */
 @SuppressWarnings("serial")
@@ -56,7 +55,7 @@ public class ClientProperties implements Serializable{
 
 	/**
 	 * set the port
-	 * @param port 
+	 * @param port int
 	 */
 	public void setPort(int port) {
 		this.port = port;
@@ -72,7 +71,7 @@ public class ClientProperties implements Serializable{
 	
 	/**
 	 * set the host address
-	 * @param hostAdress
+	 * @param hostAdress String
 	 */
 	public void setHostAdress(String hostAdress) {
 		HostAdress = hostAdress;
@@ -88,7 +87,7 @@ public class ClientProperties implements Serializable{
 
 	/**
 	 * set the host name
-	 * @param hostName
+	 * @param hostName String
 	 */
 	public void setHostName(String hostName) {
 		HostName = hostName;

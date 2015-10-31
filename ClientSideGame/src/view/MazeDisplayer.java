@@ -22,8 +22,8 @@ public abstract class MazeDisplayer extends Canvas {
 	
 	/**
 	 * do instance of MazeDisplayer with the given parameters
-	 * @param parent
-	 * @param style
+	 * @param parent Composite
+	 * @param style int
 	 */
 	public MazeDisplayer(Composite parent, int style) {
 		super(parent, style);
@@ -64,90 +64,98 @@ public abstract class MazeDisplayer extends Canvas {
 	
 	/**
 	 * return the BasicWindow instance
-	 * @return 
+	 * @return bs BasicWindow
 	 */
 	public BasicWindow getBs() {return bs;}
 
 	/**
-	 * @return boolean win / not
+	 * @return won boolean
 	 */
 	public boolean getIsWon(){return won;}
 	
 	/**
 	 * set the true / false
-	 * @param is
+	 * @param is boolean
 	 */
 	public void setIsWon(boolean is){this.won = is;}
 	
 	/**
 	 * set the Basic Window instance
-	 * @param bs
+	 * @param bs BasicWindow
 	 */
 	public void setBs(BasicWindow bs) {this.bs = bs;}
 	
 	/**
 	 * set the maze data
-	 * @param mazeData
+	 * @param mazeData int[][]
 	 */
 	public void setMazeData(int[][] mazeData){this.mazeData=mazeData;}
 	
 	/**
 	 * abstract method
+	 * @param row int
+	 * @param col int
 	 */
 	public abstract  void setCharacterPosition(int row,int col);
 	/**
 	 * abstract method
+	 * @param characterX int
 	 */
 	public abstract void setCharacterX(int characterX);
 	/**
 	 * abstract method
+	 * @return int
 	 */
 	public abstract int getCharacterX();
 	/**
 	 * abstract method
+	 * @param characterY int 
 	 */
 	public abstract void setCharacterY(int characterY);
 	/**
 	 * abstract method
+	 * @return int
 	 */
 	public abstract int getCharacterY();
 
 	/**
 	 * abstract method
+	 * @param exit int
 	 */
 	public abstract void setfloorExit(int exit);
 	/**
 	 * abstract method
+	 * @return int
 	 */
 	public abstract int getfloorExit();
 	
 	/**
 	 * set the Exit x of the maze
-	 * @param x
+	 * @param x int
 	 */
 	public void setExitX(int x) {this.ExitX= x;}
 	
 	/**
 	 * get the exit x of the maze
-	 * @return
+	 * @return ExitX int
 	 */
 	public int getExitX() {return ExitX;}
 	
 	/**
 	 * set the Exit y of the maze
-	 * @param y
+	 * @param y int
 	 */
 	public void setExitY(int y) {this.ExitY = y;}
 	
 	/**
 	 * get the exit y of the maze
-	 * @return
+	 * @return ExitY int
 	 */
 	public int getExitY() {return ExitY;}
 
 	/**
 	 * set the CurrentFloor
-	 * @param currentFloor
+	 * @param currentFloor int
 	 */
 	public void setCurrentFloor(int currentFloor) {}
 	

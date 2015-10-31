@@ -23,9 +23,9 @@ public abstract class BasicWindow extends Observable implements Runnable,View{
 	
 	/**
 	 * do basicWindow instance with the given parameters
-	 * @param title
-	 * @param width
-	 * @param height
+	 * @param title string
+	 * @param width int
+	 * @param height int
 	 */
  	public BasicWindow(String title, int width,int height) {
  		display=new Display();
@@ -68,7 +68,7 @@ public abstract class BasicWindow extends Observable implements Runnable,View{
 	
 	/**
 	 * boolean true - won false - not
-	 * @param a
+	 * @param a boolean
 	 */
 	public abstract void isWon(boolean a);
 

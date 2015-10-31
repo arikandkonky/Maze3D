@@ -237,7 +237,7 @@ public class Presenter implements Observer {
 
 	/**
 	 * set the View instance
-	 * @param view
+	 * @param view View
 	 */
 	public void setView(View view) {this.view = view;}
 
@@ -249,7 +249,7 @@ public class Presenter implements Observer {
 
 	/**
 	 * set the Model instance
-	 * @param model
+	 * @param model Model
 	 */
 	public void setModel(Model model) {this.model = model;}
 
@@ -260,7 +260,7 @@ public class Presenter implements Observer {
 
 	/**
 	 * set the Hash map {String,Command)
-	 * @param stringtoCommand
+	 * @param stringtoCommand hashmap
 	 */
 	public void setStringtoCommand(HashMap<String, Command> stringtoCommand) {this.stringtoCommand = stringtoCommand;}
 

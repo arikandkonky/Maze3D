@@ -34,8 +34,8 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * initialize in and out instances
-	 * @param in
-	 * @param out
+	 * @param in BufferedReader
+	 * @param out PrintWriter
 	 */
 	public MyView(BufferedReader in, PrintWriter out)
 	{
@@ -46,9 +46,9 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * initialize in, out and hash map {String, Command}
-	 * @param in
-	 * @param out
-	 * @param stringtoCommand
+	 * @param in BufferedReader
+	 * @param out printWriter
+	 * @param stringtoCommand hashmap
 	 */
 	public MyView(BufferedReader in, PrintWriter out,HashMap<String,Command> stringtoCommand)
 	{
@@ -63,7 +63,7 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * set the hash map string to command and make instance of the CLI
-	 * @param stringtoCommand
+	 * @param stringtoCommand hashmap
 	 */
 	public void setStringtoCommand(HashMap<String, Command> stringtoCommand) {
 		this.StringtoCommand = stringtoCommand;
@@ -85,7 +85,7 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * private method, print the Cross Arr of the maze
-	 * @param arr
+	 * @param arr int[][]
 	 */
 	public void printArr(int[][] arr)
 	{
@@ -102,7 +102,7 @@ public class MyView extends Observable implements View {
 
 	/**
 	 * return the dir path to the Out instance
-	 * @param dirpath
+	 * @param dirpath string
 	 */
 	public void Userdir(String dirpath)
 	{
@@ -111,7 +111,7 @@ public class MyView extends Observable implements View {
 	}
 	/**
 	 * return to the Out that the maze is ready
-	 * @param name
+	 * @param name string
 	 */
 	public void userMazeReady(String name)
 	{
@@ -121,8 +121,8 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * print to out, the maze as to string
-	 * @param maze3dName
-	 * @param name
+	 * @param maze3dName Maze3d
+	 * @param name string
 	 */
 	public void userprintMazetouser(Maze3d maze3dName, String name)
 	{
@@ -132,10 +132,10 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * print to out, the Cross section of the parameters
-	 * @param section
-	 * @param xyz
-	 * @param index
-	 * @param name
+	 * @param section int[][]
+	 * @param xyz string
+	 * @param index string
+	 * @param name string
 	 */
 	public void userprintCrossBySection(int[][] section, String xyz, String index, String name)
 	{
@@ -146,8 +146,8 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * print to out, the solve is ready.
-	 * @param filename
-	 * @param name
+	 * @param filename string
+	 * @param name string
 	 */
 	public void usermazeSaveToUser(String filename, String name)
 	{
@@ -157,8 +157,8 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * print to out, that maze has been loaded from filename
-	 * @param filename
-	 * @param name
+	 * @param filename string
+	 * @param name string
 	 */
 	public void userMazeLoaded(String filename, String name)
 	{
@@ -168,8 +168,8 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * print to out the size of the maze
-	 * @param name
-	 * @param s
+	 * @param name string
+	 * @param s double
 	 */
 	public void userSizeOfMaze(String name, Double s)
 	{
@@ -180,8 +180,8 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * print to out the size of the file
-	 * @param filename
-	 * @param s
+	 * @param filename string
+	 * @param s double
 	 */
 	public void userSizeOfFile(String filename, Double s)
 	{
@@ -192,7 +192,7 @@ public class MyView extends Observable implements View {
 
 	/**
 	 * print to out the solution of the maze name is ready
-	 * @param name
+	 * @param name string
 	 */
 	public void userSolutionReady(String name)
 	{
@@ -202,8 +202,8 @@ public class MyView extends Observable implements View {
 	
 	/**
 	 * print to out the solution of the maze name
-	 * @param name
-	 * @param solution
+	 * @param name string
+	 * @param solution Solution
 	 */
 	public void userprintSolution(String name, Solution<Position> solution)
 	{
@@ -224,7 +224,7 @@ public class MyView extends Observable implements View {
 
 	/**
 	 * sets the in instance
-	 * @param in
+	 * @param in BufferedReader
 	 */
 	public void setIn(BufferedReader in) {this.in = in;}
 
@@ -235,7 +235,7 @@ public class MyView extends Observable implements View {
 
 	/**
 	 * sets the out instance
-	 * @param out
+	 * @param out printWriter
 	 */
 	public void setOut(PrintWriter out) {this.out = out;}
 

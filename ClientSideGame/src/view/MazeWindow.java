@@ -68,10 +68,10 @@ public class MazeWindow extends BasicWindow {
 
 	/**
 	 * with the given parameters do the maze window instance
-	 * @param title
-	 * @param width
-	 * @param height
-	 * @param viewCommandMap
+	 * @param title string
+	 * @param width int
+	 * @param height int
+	 * @param viewCommandMap hashmap
 	 */
 	public MazeWindow(String title, int width, int height,HashMap<String, Command> viewCommandMap) {
 		super(title, width, height);
@@ -643,7 +643,7 @@ public class MazeWindow extends BasicWindow {
 	
 	/**
 	 * print to out the cross Array
-	 * @param arr
+	 * @param arr int[][]
 	 */
 	public void printMatrix(int[][] arr)
 	{
@@ -677,7 +677,7 @@ public class MazeWindow extends BasicWindow {
 	
 	/**
 	 * return the dir path to the Out instance
-	 * @param dirpath
+	 * @param dirpath string
 	 */
 	@Override
 	public void Userdir(String dirpath) {
@@ -687,7 +687,6 @@ public class MazeWindow extends BasicWindow {
 	
 	/**
 	 * return the error string to the Out instance
-	 * @param string
 	 */
 	@Override
 	public void errorNoticeToUser(String string) {out.println(string);}
@@ -695,7 +694,7 @@ public class MazeWindow extends BasicWindow {
 	
 	/**
 	 * return to the Out that the maze is ready
-	 * @param name
+	 * @param name string
 	 */
 	@Override
 	public void userMazeReady(String name) {
@@ -710,8 +709,8 @@ public class MazeWindow extends BasicWindow {
 	
 	/**
 	 * print to out, the maze as to string
-	 * @param maze3dName
-	 * @param name
+	 * @param maze3dName Maze3d
+	 * @param name string
 	 */
 	@Override
 	public void userprintMazetouser(final Maze3d maze3dName, final String name) {
@@ -746,10 +745,10 @@ public class MazeWindow extends BasicWindow {
 	}
 	/**
 	 * private method for the maze window
-	 * @param MatrixName
-	 * @param X
-	 * @param Y
-	 * @param Z
+	 * @param MatrixName string
+	 * @param X int
+	 * @param Y int
+	 * @param Z int
 	 */
 	public void helpSolveUserMazefromPoint(String MatrixName,int X, int Y,int Z)
 	{
@@ -853,8 +852,8 @@ public class MazeWindow extends BasicWindow {
 	
 	/**
 	 * check if you can go up/down in the maze
-	 * @param go
-	 * @return boolean true/false
+	 * @param go string
+	 * @return boolean 
 	 */
 	public boolean PageUpDown(String go)
 	{
@@ -915,10 +914,10 @@ public class MazeWindow extends BasicWindow {
 
 	/**
 	 * print to out, the Cross section of the parameters
-	 * @param section
-	 * @param xyz
-	 * @param index
-	 * @param name
+	 * @param section int[][]
+	 * @param xyz string
+	 * @param index string
+	 * @param name string
 	 */
 	@Override
 	public void userprintCrossBySection(int[][] section, String xyz, String index, String name) {
@@ -928,39 +927,39 @@ public class MazeWindow extends BasicWindow {
 
 	/**
 	 * print to out, the solve is ready.
-	 * @param filename
-	 * @param name
+	 * @param filename string
+	 * @param name string
 	 */
 	@Override
 	public void usermazeSaveToUser(String filename, String name) {out.println("the Maze: " + name + " saved on file name: "+ filename);}
 
 	/**
 	 * print to out, that maze has been loaded from filename
-	 * @param filename
-	 * @param name
+	 * @param filename string
+	 * @param name string
 	 */
 	@Override
 	public void userMazeLoaded(String filename, String name) {out.println("from file name: " + filename + " has beed loaded maze name: " + name);}
 
 	/**
 	 * print to out the size of the maze
-	 * @param name
-	 * @param s
+	 * @param name string
+	 * @param s double
 	 */
 	@Override
 	public void userSizeOfMaze(String name, Double s) {out.println("The size of the maze name: "+ name + " by bytes is: "+ s);}
 
 	/**
 	 * print to out the size of the file
-	 * @param filename
-	 * @param s
+	 * @param filename string
+	 * @param s double
 	 */
 	@Override
 	public void userSizeOfFile(String filename, Double s) {out.println("The file size of the file name: "+ filename + " by bytes: "+ s);}
 
 	/**
 	 * print to out the solution of the maze name is ready
-	 * @param name
+	 * @param name string
 	 */
 	@Override
 	public void userSolutionReady(String name) {
@@ -971,8 +970,8 @@ public class MazeWindow extends BasicWindow {
 
 	/**
 	 * print to out the solution of the maze name
-	 * @param name
-	 * @param solution
+	 * @param name string
+	 * @param solution solution
 	 */
 	public void userprintSolution(final String name, final Solution<Position> solution)
 	{
@@ -1070,7 +1069,7 @@ public class MazeWindow extends BasicWindow {
 
 	/**
 	 * set the maze instance
-	 * @param mazeData
+	 * @param mazeData Maze3d
 	 */
 	public void setMazeData(Maze3d mazeData) {
 		this.mazeData = mazeData;
@@ -1078,7 +1077,7 @@ public class MazeWindow extends BasicWindow {
 	
 	/**
 	 * set the user command
-	 * @param i
+	 * @param i int
 	 */
 	@Override
 	public void setUserCommand(int i) {
@@ -1098,10 +1097,10 @@ public class MazeWindow extends BasicWindow {
 
 	/**
 	 * print to out that the XML file changed.
-	 * @param string
-	 * @param string2
-	 * @param i
-	 * @param string3
+	 * @param string string
+	 * @param string2 string
+	 * @param i int
+	 * @param string3 string
 	 */
 	@Override
 	public void printXMLfieds(String string, String string2, int i, String string3) {
@@ -1119,7 +1118,7 @@ public class MazeWindow extends BasicWindow {
 
 	/**
 	 * sets the command hash map
-	 * @param viewCommandMap
+	 * @param viewCommandMap hashmap
 	 */
 	public void setViewCommandMap(HashMap<String, Command> viewCommandMap) {
 		this.viewCommandMap = viewCommandMap;
@@ -1143,7 +1142,7 @@ public class MazeWindow extends BasicWindow {
 
 	/**
 	 * set the MazeDisplayer instance
-	 * @param maze
+	 * @param maze MazeDisplayer
 	 */
 	public void setMaze(MazeDisplayer maze) {
 		this.maze = maze;
@@ -1152,7 +1151,7 @@ public class MazeWindow extends BasicWindow {
 	/**
 	 * print to out the solution of the maze name
 	 * @param name String
-	 * @param solution Solution<Position>
+	 * @param solution Solution
 	 */
 	@Override
 	public void oneStateDisplay(final String name, final Solution<Position> solution) {

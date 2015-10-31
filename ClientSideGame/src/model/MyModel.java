@@ -106,7 +106,7 @@ public class MyModel extends Observable implements Model{
 	/**
 	 * Constructor do super()
 	 * @param p properties
-	 * @throws Exception
+	 * @throws Exception exception
 	 */
 	@SuppressWarnings("unchecked")
 	public MyModel(Properties p) throws Exception
@@ -625,7 +625,7 @@ public class MyModel extends Observable implements Model{
 	 * private method to the MyModel Class.
 	 * @param filename file name
 	 * @return Properties Object
-	 * @throws Exception
+	 * @throws Exception exception
 	 */
 	public static Properties read(String filename) throws Exception {
         XMLDecoder decoder =new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
@@ -636,10 +636,10 @@ public class MyModel extends Observable implements Model{
 
 	/**
 	 * solve the maze for the MVP (GUI)
-	 * @param maze String
-	 * @param x floor
-	 * @param y  line
-	 * @param z  col
+	 * @param name String
+	 * @param x string
+	 * @param y	string
+	 * @param z	string
 	 */
 	@Override
 	public void solveMazeUser(final String name, final String x, final String y, final String z) {
@@ -794,7 +794,7 @@ public class MyModel extends Observable implements Model{
 
 	/**
 	 * initlize the data
-	 * @param data 
+	 * @param data Object
 	 */
 	public void setData(Object data) {
 		this.data = data;
@@ -809,7 +809,7 @@ public class MyModel extends Observable implements Model{
 	}
 	/**
 	 * intilize the modelCompletedCommand
-	 * @param modelCompletedCommand
+	 * @param modelCompletedCommand int
 	 */
 	public void setModelCompletedCommand(int modelCompletedCommand) {
 		this.modelCompletedCommand = modelCompletedCommand;

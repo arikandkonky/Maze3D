@@ -28,10 +28,10 @@ public class CLI implements Runnable {
 	private Scanner scanner;
 
 	/**
-	 *@param BufferedReader in 
-	 *@param PrintWriter out 
-	 *@param hashMap<String,Command> Stringtocommands 
-	 *@return CLI cli
+	 * Constructor
+	 *@param in BufferedReader  
+	 *@param out PrintWriter  
+	 *@param stringtoCommand2 hashmap
     */
 	public CLI(BufferedReader in, PrintWriter out,HashMap<String, Command> stringtoCommand2) { 
 		super(); 
@@ -136,30 +136,30 @@ public class CLI implements Runnable {
 
 	/**
 	 * sets in instance
-	 * @param in
+	 * @param in BufferedReader
 	 */
 	public void setIn(BufferedReader in) {this.in = in;}
 
 	/**
 	 * 
-	 * @return out instance
+	 * @return out PrintWriter
 	 */
 	public PrintWriter getOut() {return out;}
 
 	/**
 	 * sets the out instance
-	 * @param out
+	 * @param out PrintWriter
 	 */
 	public void setOut(PrintWriter out) {this.out = out;}
 
 	/**
-	 * @return the hash map string to command
+	 * @return stringtoCommand hashmap
 	 */
 	public HashMap<String, Command> getStringtoCommand() {return stringtoCommand;}
 
 	/**
 	 * sets the hash map string to command
-	 * @param stringtoCommand
+	 * @param stringtoCommand hashmap
 	 */
 	public void setStringtoCommand(HashMap<String, Command> stringtoCommand) {
 		this.stringtoCommand = stringtoCommand;

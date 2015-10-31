@@ -11,7 +11,7 @@ public interface Command {
 	
 /**
  * do command of the arguments []
- * @param args
+ * @param args String[]
  */
 void doCommand(String[] args); 
 } 

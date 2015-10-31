@@ -46,7 +46,7 @@ public class Properties implements Serializable {
 
 	/**
 	 * sets the number of the threads
-	 * @param numofThreads
+	 * @param numofThreads int
 	 */
 	public void setNumofThreads(int numofThreads) {this.numofThreads = numofThreads;}
 
@@ -57,7 +57,7 @@ public class Properties implements Serializable {
 
 	/**
 	 * sets the algorithm(Generate algorithm)
-	 * @param defAlgorithm
+	 * @param defAlgorithm string
 	 */
 	public void setDefAlgorithm(String defAlgorithm) {this.defAlgorithm = defAlgorithm;}
 
@@ -69,7 +69,7 @@ public class Properties implements Serializable {
 
 	/**
 	 * set the solver algorithm
-	 * @param defSolver
+	 * @param defSolver string
 	 */
 	public void setDefSolver(String defSolver) {this.defSolver = defSolver;}
 
@@ -80,7 +80,7 @@ public class Properties implements Serializable {
 
 	/**
 	 * sets the UI instance
-	 * @param uI
+	 * @param uI string
 	 */
 	public void setUI(String uI) {UI = uI;}
 	
