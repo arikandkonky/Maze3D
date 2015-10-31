@@ -28,11 +28,10 @@ public class CLI implements Runnable {
 	private Scanner scanner;
 
 	/**
-	 * This Constractor get 3 parameters : BufferedReader in, PrintWriter out, hashMap<String,Command> Stringtocommands.
-	 *@param BufferedReader in represent from what the view will get the parameters from the client.
-	 *@param PrintWriter out represent to where the view will print hes methods.
-	 *@param hashMap<String,Command> Stringtocommands represent the commands that he will work on him.
-	 *@return CLI As instance with the given BufferedReader in, PrintWriter out, hashMap<String,Command> Stringtocommands.
+	 *@param BufferedReader in 
+	 *@param PrintWriter out 
+	 *@param hashMap<String,Command> Stringtocommands 
+	 *@return CLI cli
     */
 	public CLI(BufferedReader in, PrintWriter out,HashMap<String, Command> stringtoCommand2) { 
 		super(); 

@@ -660,10 +660,10 @@ public class MazeWindow extends BasicWindow {
 	
 	/**
 	 * print to out, the Cross section of the parameters
-	 * @param section
-	 * @param xyz
-	 * @param index
-	 * @param name
+	 * @param crossedArr int[][]
+	 * @param axe String
+	 * @param index String 
+	 * @param name String
 	 */
 	public void printToUserCrossedArray(int[][] crossedArr, String axe, String index, String name) {
 		this.crossedArr = crossedArr;
@@ -1127,7 +1127,7 @@ public class MazeWindow extends BasicWindow {
 	
 	/**
 	 * sets if the user won or not
-	 * @param boolean a
+	 * @param a boolean
 	 */
 	public void isWon(boolean a){
 		this.flag= a;
@@ -1151,8 +1151,8 @@ public class MazeWindow extends BasicWindow {
 	
 	/**
 	 * print to out the solution of the maze name
-	 * @param string
-	 * @param solution
+	 * @param name String
+	 * @param solution Solution<Position>
 	 */
 	@Override
 	public void oneStateDisplay(final String name, final Solution<Position> solution) {

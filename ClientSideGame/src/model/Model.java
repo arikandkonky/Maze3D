@@ -29,14 +29,14 @@ public interface Model {
 	
 	/**
 	 * Get the Model Command for the MVP
-	 * @return
+	 * @return int 
 	 */
 	int getModelCompletedCommand();
 	
 	/**
 	 * return to the MVP the files on the dir path
 	 * @param dir gets dir path
-	 * @throws NullPointerException
+	 * @throws NullPointerException nullpointerexception
 	 */
 	void dir(String dir) throws NullPointerException;
 	
@@ -52,7 +52,7 @@ public interface Model {
 	
 	/**
 	 * return the instance maze as Maze3d to the MVP
-	 * @param namev the maze name
+	 * @param name the maze name
 	 */
 	void getMazeBygivenName(String name);
 
@@ -69,7 +69,7 @@ public interface Model {
 	 * save the instance Maze3d to the filename with name: maze name
 	 * @param name maze name
 	 * @param filename file name
-	 * @throws IOException 
+	 * @throws IOException ioException
 	 */
 	void saveMazeToFile(String name, String filename) throws IOException;
 
@@ -77,7 +77,7 @@ public interface Model {
 	 * load maze from file name exists as Maze3d instance.
 	 * @param filename file name
 	 * @param name maze name
-	 * @throws IOException
+	 * @throws IOException ioException
 	 */
 	void loadMazeToFile(String filename, String name) throws IOException;
 	
@@ -109,7 +109,7 @@ public interface Model {
 	/**
 	 * change the XML file
 	 * @param filename file name
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException notfileexception
 	 */
 	void changeXmlFile(String filename) throws FileNotFoundException;
 
@@ -137,9 +137,9 @@ public interface Model {
 	 * @param Port server port
 	 * @param HostName server host name
 	 * @param algorithm solve algorithm
-	 * @throws UnknownHostException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * @throws UnknownHostException noHostException
+	 * @throws IOException ioException
+	 * @throws ClassNotFoundException classnotFoundException
 	 */
 	void remoteSolveModel(String string, String string2, String string3, String string4,String Port,String HostName,String algorithm) throws UnknownHostException, IOException, ClassNotFoundException;
 	

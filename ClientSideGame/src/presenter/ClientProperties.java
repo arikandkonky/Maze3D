@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * 
  * @author Nir Konky and Arik Bidny
- * <h1> ClientProperties<h1>
+ * <h1>ClientProperties<h1>
  * ClientProperties implements Serializable and must use hes all Function
  */
 @SuppressWarnings("serial")

@@ -75,7 +75,7 @@ public class MyModel extends Observable implements Model{
 	 * Constructor, do Super(), trying to read the Solutions from the solution file.
 	 * @param p properties
 	 * @param cp ClientProperties
-	 * @throws Exception
+	 * @throws Exception someException
 	 */
 	@SuppressWarnings("unchecked")
 	public MyModel(Properties p,ClientProperties cp) throws Exception
@@ -136,7 +136,7 @@ public class MyModel extends Observable implements Model{
 	/**
 	 * return to the MVP the files on the dir path
 	 * @param dir gets dir path
-	 * @throws NullPointerException
+	 * @throws NullPointerException nullpointerException
 	 */
 	public void dir(String dir) throws NullPointerException
 	{
@@ -233,7 +233,7 @@ public class MyModel extends Observable implements Model{
 	}
 	/**
 	 * return the instance maze as Maze3d to the MVP
-	 * @param namev the maze name
+	 * @param name String 
 	 */
 	public synchronized void getMazeBygivenName(String name)
 	{
@@ -324,7 +324,7 @@ public class MyModel extends Observable implements Model{
 	 * save the instance Maze3d to the filename with name: maze name
 	 * @param name maze name
 	 * @param filename file name
-	 * @throws IOException 
+	 * @throws IOException ioexception 
 	 */
 	public void saveMazeToFile(String name, String filename) throws IOException{
 		if(filename.isEmpty()||name.isEmpty())
@@ -380,7 +380,7 @@ public class MyModel extends Observable implements Model{
 	 * load maze from file name exists as Maze3d instance.
 	 * @param filename file name
 	 * @param name maze name
-	 * @throws IOException
+	 * @throws IOException ioexception
 	 */
 	public void loadMazeToFile(String filename, String name) throws IOException{
 		File f = new File(filename);
@@ -552,7 +552,7 @@ public class MyModel extends Observable implements Model{
 	/**
 	 * change the XML file
 	 * @param filename file name
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException filenotfoundexception
 	 */
 	@Override
 	public void changeXmlFile(String filename) throws FileNotFoundException {
@@ -636,10 +636,10 @@ public class MyModel extends Observable implements Model{
 
 	/**
 	 * solve the maze for the MVP (GUI)
-	 * @param string maze name
-	 * @param string2 x- floor of the maze
-	 * @param string3 y - line of the maze
-	 * @param string4 z - col of the maze
+	 * @param maze String
+	 * @param x floor
+	 * @param y  line
+	 * @param z  col
 	 */
 	@Override
 	public void solveMazeUser(final String name, final String x, final String y, final String z) {
@@ -708,7 +708,7 @@ public class MyModel extends Observable implements Model{
 
 	/**
 	 * return the solution to the MVP(GUI)
-	 * @param string name of the maze name
+	 * @param name String
 	 */
 	@Override
 	public void solveMazeUserOnepoint(final String name) {
@@ -729,16 +729,16 @@ public class MyModel extends Observable implements Model{
 	}	
 	/**
 	 * connect to the server and ask him to solve the maze, when finished, he return the solution to the MVP
-	 * @param string maze name
-	 * @param string2 x - floor of the maze
-	 * @param string3 y - line of the maze
-	 * @param string4 z - col of the maze
-	 * @param Port server port
-	 * @param HostName server host name
+	 * @param name String
+	 * @param x String
+	 * @param y String
+	 * @param z String
+	 * @param port server port
+	 * @param hostName server host name
 	 * @param algorithm solve algorithm
-	 * @throws UnknownHostException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * @throws UnknownHostException hostExceptions
+	 * @throws IOException ioException
+	 * @throws ClassNotFoundException noclassException
 	 */
 	@Override
 	public void remoteSolveModel(String name, String x, String y, String z,String port,String hostName,String algorithm) throws IOException, ClassNotFoundException {
@@ -802,7 +802,7 @@ public class MyModel extends Observable implements Model{
 
 	/**
 	 * Get the Model Command for the MVP
-	 * @return
+	 * @return modelCompletedCommand
 	 */
 	public int getModelCompletedCommand() {
 		return modelCompletedCommand;

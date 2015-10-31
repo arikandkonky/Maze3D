@@ -258,7 +258,7 @@ public class MyView extends Observable implements View {
 	public void printXMLfieds(String string, String string2, int i, String string3) {out.println("XML fieds: \n Defualt algorithm: "+ string + "Defualt solver: "+ string2 + "Num of threads: "+ i+ "Default UI: "+ string3);}
 
 	/**
-	 * Do nothing.-->Only in GUI it Work!
+	 * for MVP design
 	 */
 	@Override
 	public void oneStateDisplay(String string, Solution<Position> solution) {}

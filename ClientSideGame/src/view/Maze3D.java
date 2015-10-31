@@ -239,7 +239,7 @@ public class Maze3D extends MazeDisplayer {
 		
 		/**
 		 * set the char y
-		 * @param char y
+		 * @param characterY y
 		 */
 		public void setCharacterY(int characterY) {this.characterY = characterY;}
 		
@@ -251,19 +251,19 @@ public class Maze3D extends MazeDisplayer {
 		
 		/** 
 		 * set the Exit x
-		 * @param exit x
+		 * @param exitX int
 		 */
 		public void setExitX(int exitX) {this.exitX = exitX;}
 		
 		/**
 		 * get the exit y
-		 * @return exit y
+		 * @return exitY int
 		 */
 		public int getExitY() {return exitY;}
 		
 		/**
 		 * sets the exit y
-		 * @param exit y
+		 * @param exitY int
 		 */
 		public void setExitY(int exitY) {this.exitY = exitY;}
 		
@@ -275,13 +275,13 @@ public class Maze3D extends MazeDisplayer {
 		
 		/**
 		 * sets the current floor
-		 * @param current floor
+		 * @param currentFloor
 		 */
 		public void setCurrentFloor(int currentFloor) {this.currentFloor = currentFloor;}
 		
 		/**
 		 * sets the exit floor
-		 * @param floor exit
+		 * @param exit floor
 		 */
 		@Override
 		public void setfloorExit(int exit) {this.floorExit = exit;}
