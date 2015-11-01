@@ -14,6 +14,7 @@ public class AstarTest {
 	/**
 	 * @throws java.lang.Exception exception
 	 */
+	@SuppressWarnings("unused")
 	public static void setUpBeforeClass() throws Exception {
 		Maze3DSolution solution;
 		Manhattandistance h2;
@@ -40,6 +41,7 @@ public class AstarTest {
 	 */
 	public void tearDown() throws Exception {
 	}
+	@SuppressWarnings({ "unchecked" })
 	public void test() {
 		System.out.println("Test");
 		Maze3DSolution solution = new Maze3DSolution();
@@ -47,18 +49,21 @@ public class AstarTest {
 		My3dGenerator mg  = new My3dGenerator();
 		Maze3d oneOnOne = mg.generate(1, 1, 1);
 		Maze3d oneOnTwo = mg.generate(1, 1, 2);
+		@SuppressWarnings("unused")
 		Maze3d emptyMaze = new Maze3d(2,2, 2);
 		Maze3d zeroMaze = new Maze3d(0,0,0);
 		
 		
 		//oneOnone Test:
 		Searchable<Position> s = new Maze3dSearch(oneOnOne);
+		@SuppressWarnings("rawtypes")
 		AstarCommonSearcher Astar = new AstarCommonSearcher<>(h2, solution, s);
 		Astar.setSolution(solution);
 		assert(oneOnOne.getStartPosition() == (Position)Astar.Search(s));
 		
 		//OneOnTwo Test:
 		Searchable<Position> s1 = new Maze3dSearch(oneOnTwo);
+		@SuppressWarnings("rawtypes")
 		AstarCommonSearcher Astar1 = new AstarCommonSearcher<>(h2, solution, s1);
 		Astar1.setSolution(solution);
 		assert( null != (Solution<Position>)Astar1.Search(s));
@@ -66,6 +71,7 @@ public class AstarTest {
 		
 		//OneOnTwo Test:
 		Searchable<Position> s2 = new Maze3dSearch(zeroMaze);
+		@SuppressWarnings("rawtypes")
 		AstarCommonSearcher Astar2 = new AstarCommonSearcher<>(h2, solution, s2);
 		Astar2.setSolution(solution);
 		assert( null == (Solution<Position>)Astar2.Search(s));
@@ -78,6 +84,7 @@ public class AstarTest {
 		
 		
 		
+		@SuppressWarnings("unused")
 		Maze3dSearch realMazeToCheck = new Maze3dSearch(mg.generate(3, 3, 3));
 		
 		assert(1==0);

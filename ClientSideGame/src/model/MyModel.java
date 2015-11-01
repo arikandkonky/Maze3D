@@ -40,7 +40,6 @@ import algorithms.search.Maze3DSolution;
 import algorithms.search.Maze3dSearch;
 import algorithms.search.Searchable;
 import algorithms.search.Solution;
-import algorithms.search.State;
 import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 import presenter.ClientProperties;
