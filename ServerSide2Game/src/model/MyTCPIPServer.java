@@ -59,6 +59,7 @@ public class MyTCPIPServer {
 				System.out.println("in opening the Server");
 				ObjectOutputStream output=new ObjectOutputStream(someClient.getOutputStream());
 				ObjectInputStream input=new ObjectInputStream(someClient.getInputStream());
+				@SuppressWarnings("unchecked")
 				ArrayList<Object> line =  (ArrayList<Object>) input.readObject();
 				if(line.get(0).equals(GET_SOLVE)){
 					System.out.println("im here");

@@ -10,7 +10,7 @@ package presenter;
 public interface Command { 
 	/**
 	 * do command of the arguments []
-	 * @param String[] args
+	 * @param args String[]
 	 */
 	void doCommand(String[] args); 
 } 

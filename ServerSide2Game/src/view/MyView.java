@@ -121,7 +121,7 @@ public class MyView extends Observable implements View {
 	}
 
 	/**
-	 * get hash map string > command
+	 * get hash map string to command
 	 * @return stringtoCommand hashmap
 	 */
 	public HashMap<String, Command> getStringtoCommand() {

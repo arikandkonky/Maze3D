@@ -216,7 +216,7 @@ public class MazeWindow extends BasicWindow {
 	}
 	
 	/**
-	 * get hash map string> command
+	 * get hash map string to command
 	 * @return viewCommandMap hashmap
 	 */
 	public HashMap<String, Command> getViewCommandMap() {

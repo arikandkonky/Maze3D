@@ -29,10 +29,10 @@ public class CLI implements Runnable {
 
 
 	/**
-	 *@param BufferedReader in 
-	 *@param PrintWriter out 
-	 *@param hashMap<String,Command> Stringtocommands 
-	 *@return CLI cli
+	 * Constructor
+	 *@param in BufferedReader 
+	 *@param out PrintWriter 
+	 *@param stringtoCommand2 hashmap
     */
 	public CLI(BufferedReader in, PrintWriter out,HashMap<String, Command> stringtoCommand2) { 
 		super(); 

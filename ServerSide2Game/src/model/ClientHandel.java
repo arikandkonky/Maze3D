@@ -3,19 +3,12 @@ package model;
 import java.beans.XMLDecoder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-
-import javax.swing.text.Position;
 
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.search.Solution;
@@ -32,6 +25,7 @@ import presenter.ServerProperties;
 public class ClientHandel implements Runnable{
 
 	private MyModel model;
+	@SuppressWarnings("unused")
 	private Socket someClient;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;

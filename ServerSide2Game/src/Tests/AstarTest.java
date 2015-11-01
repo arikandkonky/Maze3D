@@ -12,8 +12,9 @@ import algorithms.search.Solution;
 public class AstarTest {
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception exception
 	 */
+	@SuppressWarnings("unused")
 	public static void setUpBeforeClass() throws Exception {
 		Maze3DSolution solution;
 		Manhattandistance h2;
@@ -24,23 +25,24 @@ public class AstarTest {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception exception
 	 */
 	public static void tearDownAfterClass() throws Exception {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception exception
 	 */
 	public void setUp() throws Exception {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception exception
 	 */
 	public void tearDown() throws Exception {
 	}
 
+	@SuppressWarnings({ "unused", "rawtypes", "unchecked" })
 	public void test() {
 		System.out.println("Test");
 		Maze3DSolution solution = new Maze3DSolution();

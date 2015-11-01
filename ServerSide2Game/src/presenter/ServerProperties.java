@@ -2,9 +2,8 @@ package presenter;
 
 /**
  * 
- * @author nir konky and arik bidny
- * <h1>ServerProperties<h1>
- * mean the server properties
+ *@author nir konky and arik bidny
+ *mean the server properties
  */
 public class ServerProperties {
 

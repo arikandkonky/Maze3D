@@ -1,10 +1,6 @@
 package model;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.net.Socket;
 import java.util.concurrent.ExecutionException;
 
 import algorithms.mazeGenerators.Maze3d;
@@ -42,7 +38,7 @@ public interface Model {
 	 * return the solution of the maze
 	 * @param maze maze instance
 	 * @param defSolver String default solvr
-	 * @return Solution<Position> Solution instance
+	 * @return Solution instance
 	 * @throws IOException exception
 	 * @throws ClassNotFoundException exception
 	 * @throws InterruptedException exception
@@ -57,8 +53,8 @@ public interface Model {
 	
 	/**
 	 * Start the server.
-	 * @param Port
-	 * @param NumOfClients
+	 * @param Port string
+	 * @param NumOfClients string
 	 */
 	void startServer(String Port, String NumOfClients);
 	

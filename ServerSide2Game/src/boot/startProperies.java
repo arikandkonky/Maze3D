@@ -19,6 +19,7 @@ public class startProperies {
 			encoder.writeObject(new Properties(numofThreads, deafultAlgorithm, defaultSolver,"CLI"));
 			encoder.flush();
 			encoder.close();
+			@SuppressWarnings({ "unused", "resource" })
 			XMLEncoder encoder2 = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("ServerProperties.xml")));
 			int numofThreads2 = 30;
 			int port = 12345;

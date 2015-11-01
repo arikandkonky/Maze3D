@@ -18,7 +18,7 @@ public interface View {
 	
 	/**
 	 * return the error string to the Out instance
-	 * @param String string
+	 * @param string string
 	 */
 	void errorNoticeToUser(String string);
 	
