@@ -44,6 +44,7 @@ import io.MyCompressorOutputStream;
 import io.MyDecompressorInputStream;
 import presenter.ClientProperties;
 import presenter.Properties;
+import presenter.XmlProperties;
 
 
 /**
@@ -58,6 +59,7 @@ public class MyModel extends Observable implements Model{
 	Object data;
 	Properties p;
 	ClientProperties cp;
+	XmlProperties xp;
 	int modelCompletedCommand=0;
 	ExecutorService c ;
 	HashMap<String, Maze3d> stringtoMaze3d = new HashMap<String, Maze3d>();
@@ -82,6 +84,7 @@ public class MyModel extends Observable implements Model{
 		super();
 		this.cp = cp;
 		this.p = p;
+		System.out.println("in exists");
 		this.c = Executors.newFixedThreadPool(p.getNumofThreads());
 		File sol = new File("solutionMap.txt");
 		if(sol.exists())
@@ -101,6 +104,35 @@ public class MyModel extends Observable implements Model{
 		}
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public MyModel(Properties p,ClientProperties cp,XmlProperties xp) throws Exception
+	{
+		super();
+		this.xp = xp;
+		this.cp = cp;
+		this.p = p;
+		System.out.println("in exists");
+		this.c = Executors.newFixedThreadPool(p.getNumofThreads());
+		File sol = new File("solutionMap.txt");
+		if(sol.exists())
+		{
+			ObjectInputStream solLoader;
+			try
+			{
+				solLoader = new ObjectInputStream(new GZIPInputStream(new FileInputStream(new File("solutionMap.txt"))));
+				solutionMap = (HashMap<Maze3d, Solution<Position>>) solLoader.readObject();
+				solLoader.close();
+				this.p = read("Properties.xml");
+			
+			}
+			catch(FileNotFoundException e){errorNoticeToController("Error: problem with solution file");}
+			catch(IOException e){errorNoticeToController("Error: IO exeption");}
+			catch(ClassNotFoundException e){errorNoticeToController("Error: problem with class");}
+		}
+		
+	}
+	
 	
 	/**
 	 * Constructor do super()
@@ -558,18 +590,16 @@ public class MyModel extends Observable implements Model{
 		File file = new File(filename);
 		if (file.exists())
 		{
-			this.modelCompletedCommand = 12;
+			this.modelCompletedCommand = 11;
 			@SuppressWarnings("resource")
 			XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
-			p.setDefAlgorithm((String) decoder.readObject());
-			p.setDefSolver((String) decoder.readObject());
-			p.setNumofThreads((int) decoder.readObject());
-			p.setUI((String) decoder.readObject());
-			Object[] dataSet = new Object[4];
-			dataSet[0] = p.getDefAlgorithm();
-			dataSet[1] = p.getDefSolver();
-			dataSet[2] = p.getNumofThreads();
-			dataSet[3] = p.getUI();
+			XmlProperties xp =  (XmlProperties) decoder.readObject();
+			Object[] dataSet = new Object[5];
+			dataSet[0] = xp.getDefAlgorithm();
+			dataSet[1] = xp.getName();
+			dataSet[2] = xp.getFloor();
+			dataSet[3] = xp.getLine();
+			dataSet[4] = xp.getCol();
 			setChanged();
 			this.setData(dataSet);
 			notifyObservers();

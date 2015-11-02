@@ -103,11 +103,12 @@ public interface View {
 	/**
 	 * print to out that the XML file changed.
 	 * @param string string
-	 * @param string2 string
-	 * @param i int
-	 * @param string3 string
+	 * @param name String
+	 * @param floor String
+	 * @param line String
+	 * @param col string
 	 */
-	void printXMLfieds(String string, String string2, int i, String string3);
+	void printXMLfieds(String string,String name,String floor,String line,String col);
 
 	/**
 	 * print to out the solution of the maze name

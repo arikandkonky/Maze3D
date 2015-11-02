@@ -255,7 +255,7 @@ public class MyView extends Observable implements View {
 	 * print to out the XML fields
 	 */
 	@Override
-	public void printXMLfieds(String string, String string2, int i, String string3) {out.println("XML fieds: \n Defualt algorithm: "+ string + "Defualt solver: "+ string2 + "Num of threads: "+ i+ "Default UI: "+ string3);}
+	public void printXMLfieds(String string,String name,String floor,String line,String col) {out.println("XML fieds");}
 
 	/**
 	 * for MVP design

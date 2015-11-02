@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<java version="1.8.0_51" class="java.beans.XMLDecoder">
+<java version="1.8.0_65" class="java.beans.XMLDecoder">
  <object class="presenter.ClientProperties">
   <void property="hostAdress">
-   <string>169.254.68.17</string>
+   <string>192.168.11.1</string>
   </void>
   <void property="hostName">
    <string>nirkonky</string>

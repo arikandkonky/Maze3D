@@ -174,6 +174,21 @@ public class Presenter implements Observer {
 			}
 		});
 		
+		stringtoCommand.put("change xml", new Command() {
+			
+			@Override
+			public void doCommand(String[] args) {
+				try {
+					System.out.println("in the Command map doing usercommand 12!");
+					view.setUserCommand(12);
+					((Observable)view).notifyObservers(args);
+				} catch (Exception e) {
+					e.printStackTrace();
+					view.errorNoticeToUser("Wrong parameters, use: file size <filename>");
+				}
+			}
+		});
+		
 		stringtoCommand.put("file size", new Command() {
 			
 			@Override
@@ -366,12 +381,14 @@ public class Presenter implements Observer {
 				break;
 			
 			case 12:
+				System.out.println("in case 12! in properties!");
 				try{model.changeXmlFile(args[0]);
 				
 				}catch(Exception e){
 					e.printStackTrace();
 					view.errorNoticeToUser("Error: Not XML file");
 				}
+				break;
 			case 13:
 				try{model.solveMazeUser(args[0],args[1],args[2],args[3]);
 				
@@ -460,13 +477,12 @@ public class Presenter implements Observer {
 				
 			case 10:
 				dataSet = (Object[]) model.getData();
-				System.out.println(dataSet[0]+""+dataSet[1]);
 				view.userprintSolution((String)dataSet[0], (Solution<Position>)dataSet[1]);
 				break;
 				
 			case 11:
 				dataSet = (Object[])model.getData();
-				view.printXMLfieds((String)dataSet[0],(String)dataSet[1],(int)dataSet[2],(String)dataSet[3]);
+				view.printXMLfieds((String)dataSet[0],(String)dataSet[1],(String)dataSet[2],(String)dataSet[3],(String)dataSet[4]);
 				break;
 			case 12:
 				dataSet = (Object[])model.getData();

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 
 /**
- * 
  * @author Nir Konky and Arik Bidny
  * ClientProperties implements Serializable and must use hes all Function
  */

@@ -135,10 +135,8 @@ public class MazeWindow extends BasicWindow {
 		        String[] filterExt = {"*.xml"};
 		        fd.setFilterExtensions(filterExt);
 		        String selected = fd.open();
-		        System.out.println(selected);
-		        userCommand = 12;
 		        String[] args = {selected};
-		        notifyObservers(args);
+		        viewCommandMap.get("change xml").doCommand(args);
 			}
 			
 			@Override
@@ -1097,13 +1095,13 @@ public class MazeWindow extends BasicWindow {
 	/**
 	 * print to out that the XML file changed.
 	 * @param string string
-	 * @param string2 string
-	 * @param i int
-	 * @param string3 string
+	 * @param floor int
+	 * @param line int
+	 * @param col int
 	 */
 	@Override
-	public void printXMLfieds(String string, String string2, int i, String string3) {
-		// TODO Auto-generated method stub
+	public void printXMLfieds(String string,String name,String floor,String line,String col) {
+		initMaze(name,floor,line,col);
 		
 	}
 	
