@@ -120,17 +120,27 @@ public class MyModel extends Observable implements Model{
 			ObjectInputStream solLoader;
 			try
 			{
+				
 				solLoader = new ObjectInputStream(new GZIPInputStream(new FileInputStream(new File("solutionMap.txt"))));
+				System.out.println("im here");
 				solutionMap = (HashMap<Maze3d, Solution<Position>>) solLoader.readObject();
+				System.out.println("im here2");
 				solLoader.close();
 				this.p = read("Properties.xml");
-			
+			} 
+			catch (FileNotFoundException e) {errorNoticeToController("Problam with solution map file");} 
+			catch (IOException e) 
+			{
+				errorNoticeToController("Problam with solution map file(IO)");
+				e.printStackTrace();
+			} 
+			catch (ClassNotFoundException e) {errorNoticeToController("problam with class");} 
+			catch (Exception e) 
+			{
+				errorNoticeToController("Problem with xml");
+				e.printStackTrace();
 			}
-			catch(FileNotFoundException e){errorNoticeToController("Error: problem with solution file");}
-			catch(IOException e){errorNoticeToController("Error: IO exeption");}
-			catch(ClassNotFoundException e){errorNoticeToController("Error: problem with class");}
 		}
-		
 	}
 	
 	
